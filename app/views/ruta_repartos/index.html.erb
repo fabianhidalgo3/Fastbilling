@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Ruta Repartos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th>Porcion reparto</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ruta_repartos.each do |ruta_reparto| %>
+      <tr>
+        <td><%= ruta_reparto.codigo %></td>
+        <td><%= ruta_reparto.nombre %></td>
+        <td><%= ruta_reparto.porcion_reparto %></td>
+        <td><%= link_to 'Show', ruta_reparto %></td>
+        <td><%= link_to 'Edit', edit_ruta_reparto_path(ruta_reparto) %></td>
+        <td><%= link_to 'Destroy', ruta_reparto, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Ruta Reparto', new_ruta_reparto_path %>

@@ -1,0 +1,21 @@
+<div id="autoriza_facturacion">
+	<% if !@completado.nil? %>
+		<!--Carga Filtro Dudosos Maximos-->
+		<% if (@completado[0]) && (@completado[1] == 1) then %>
+			<div>
+				<script>
+					alert("Facturacion Autorizada");
+					mostrar_dudosos();
+				</script>
+			</div>
+		<% end %>
+        <% if (@completado[0]) && (@completado[1] == 2) then %>
+			<div>
+				<script>
+					alert("Facturacion Autorizada");
+					mostrar_improcedentes();
+				</script>
+			</div>
+		<% end %>
+	<%end%>
+</div>

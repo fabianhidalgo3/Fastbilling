@@ -1,0 +1,23 @@
+<div id="alertas">
+  <% if !@completado.nil?  %>
+		<script>
+      $("#modalLecturaDictada").modal('hide');
+      sleep(10000);
+			Push.create("Lectura Guardada", {
+				body: "<%= @completado[0].to_s%>",
+				icon: "<%= asset_path('correcto.png') %>",
+				timeout: 5000,
+				onClick: function () {
+					window.focus();
+					this.close();
+				}
+      })
+
+      function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      mostrarTablaContenido();
+		</script>
+	<% end %>
+</div>

@@ -1,0 +1,2 @@
+class DespachosController < ApplicationController
+end

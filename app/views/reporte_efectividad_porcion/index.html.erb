@@ -1,0 +1,107 @@
+<title>Efectividad Por Porción</title>
+<div class="panel panel-default" id="panel-titulos">
+		<div class="panel-body">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+				<li class="breadcrumb-item">Lectura </li>
+				<li class="breadcrumb-item">Reportes </li>
+	  		<li class="breadcrumb-item active">Efectividad por Porción</li>
+			</ol>
+		</div>
+	</div>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-4">
+					<div class="panel panel-default">
+						<div class="panel-heading"><%= label_tag ( "Rangos de Fecha: ") %></div>
+						<div class="panel-body">
+							<%= label_tag ( "Desde: ") %>
+							<%= select_day(Date.today, class: "form-control",field_name: 'dia-desde',)%>
+							<%= select_month(Date.today,use_month_names: %w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre),  field_name: 'mes-desde') %>
+							<%= select_year(Date.today,start_year: 1992, end_year: 2099, field_name: 'ano-desde', :class => 'form-control') %>
+							<br>
+							<%= label_tag ( "Hasta: ") %> 
+							<%= select_day(Date.today, use_two_digit_numbers: true, class: "form-control",field_name: 'dia-hasta',)%>
+							<%= select_month(Date.today, use_month_names: %w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre),  field_name: 'mes-hasta') %>
+							<%= select_year(Date.today, start_year: 1992, end_year: 2099, field_name: 'ano-hasta', :class => 'form-control') %>
+						</div>
+					</div>			
+				</div>
+				<div class="col-md-3">
+					<label for="">Región</label>
+					<%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "nombre"), :prompt=> "Seleccionar", :class => "form-control input-sm" , :onchange => 'carga_porciones();carga_comunas(); '%>
+				</div>
+				<div class="col-md-3">
+					<label for="">Porción</label>
+					<%= render 'carga_porciones' %>
+				</div>	
+				<div class="col-md-1">
+					<br>
+					<button type="button" onclick="carga_filtro();" class="btn btn-default form-control"><span class="mdi mdi-magnify"></span> </button>			
+			</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<div class="">
+	<%= render 'carga_filtro'%>
+</div>
+
+<script type="text/javascript">
+	function carga_filtro(){
+		var zona    = document.getElementById("Zona").value;
+		var porcion = document.getElementById("Porcion").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_efectividad_porcion',:action => 'carga_filtro' %>",
+            data: 'zona=' + encodeURIComponent(zona)+ "&" +
+									'porcion=' + encodeURIComponent(porcion),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+
+	//Carga Porciones
+	function carga_porciones() {
+		var zona = document.getElementById("Zona").value;
+		var desde = document.getElementById("desde").value;
+		var hasta = document.getElementById("hasta").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_efectividad_porcion',:action => 'carga_porciones' %>",
+						data: 'zona=' + encodeURIComponent(zona)+ "&" + 
+									'desde=' + encodeURIComponent(desde)+ "&" + 
+									'hasta=' + encodeURIComponent(hasta),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+	$(function(){
+		$('.pagination a').attr('data-remote', 'true')
+	});
+	$(function() {
+		$('#desde').datepicker({
+			dateFormat: 'dd/mm/yy',
+			changeMonth: true,
+			changeYear: true,
+			firstDay: 1,
+			monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+			monthNames: ['Enero', 'Febrero', 'Marzo','Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Septiembre','Octubre', 'Noviembre', 'Diciembre'],
+			dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
+
+		});
+		$('#hasta').datepicker({
+			dateFormat: 'dd/mm/yy',
+			changeMonth: true,
+			changeYear: true,
+			firstDay: 1,
+			monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+			monthNames: ['Enero', 'Febrero', 'Marzo','Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Septiembre','Octubre', 'Noviembre', 'Diciembre'],
+			dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
+
+		});
+	});
+
+	
+</script>

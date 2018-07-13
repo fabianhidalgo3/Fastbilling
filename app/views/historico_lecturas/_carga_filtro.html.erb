@@ -1,0 +1,241 @@
+<div id="ordenes">
+	<div class="panel panel-default">
+		<div class="panel-heading"><b>Resultados de la Busqueda</b> <span class="mdi mdi-table-large"></span></div>
+		<div class="panel-body">
+				<div class="row">
+						<div class="col-md-12">
+							<p>Exportar:</p><hr>
+							<button onclick="exportarPdf();" type="button" class="btn btn-pdf btn-sm" data-toggle="tooltip" data-placement="top" title="PDF"><span class="mdi mdi-file-pdf mdi-18px"></span></button>
+							<button onclick="exportarCsv();" type="button" class="btn btn-excel btn-sm" data-toggle="tooltip" data-placement="top" title="CSV"><span class="mdi mdi-file-excel mdi-18px"></span></button>
+							<br><br>	
+							<tr>
+								<th>Cant. Claves Lectura</th>
+								<th>: </th>
+								<th><%= label_tag @totalClaves %></th>
+							</tr><br>
+							<tr>
+								<th>Cant. Observaciones de Lectura</th>
+								<th>: </th>
+								<th><%= label_tag @totalObservaciones %></th>
+							</tr>
+						</div>
+					</div>
+					<hr>	
+			<table  class="table table-hover table-condensed table-striped table-bordered animated fadeIn fast" >
+				<thead>
+					<tr>
+						<th style="width: 10%;"><span class="mdi mdi-settings"></span></th>
+						<th>Nº Cliente</th>
+						<th>Lector</th>
+						<th>Nombre Cliente</th>
+						<th>Nº de Medidor</th>
+						<th>Instalación</th>
+						<th>Dirección</th>
+						<th>Comuna</th>
+						<th>Proceso</th>
+						<th>Fecha</th>
+						<th>Hora</th>
+						<th>Lectura</th>
+						<th>Clave Lectura</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% if !@lecturas.nil?%>
+						<% @lecturas.each do |l| %>
+							<tr>
+								<td align="center">
+									<button onclick="mostrarFotografias('<%=l.id%>');" type="button" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="Ver Fotografias">
+											<span class="mdi mdi-camera mdi-8px" style="color:white"></span>
+									</button>
+										<button onclick="mostrarUbicacion('<%=l.id%>');mapa();" type="button" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="Mostrar Ubicación">
+											<span class="mdi mdi-map-marker mdi-8px" style="color:white" ></span>
+										</button>
+								</td>
+								<td>
+									<% if !l.cliente.nil? %>
+										<b><%= l.cliente.numero_cliente %></b>
+									<% end %>
+								</td>
+								<td>
+									<% if !l.asignacion.empleado.nil? %>
+										<%= l.asignacion.empleado.nombre_completo %>
+									<%end%>
+								</td>
+								<td>
+									<% if !l.cliente.nil? %>
+										<%= l.cliente.nombre %>
+									<%end%>
+								</td>
+								<td>
+									<% if !l.medidor.nil? %>
+										<b><%= l.medidor.numero_medidor %></b>
+									<%end%>
+								</td>
+								<td>
+									<% if !l.instalacion.nil? %>
+										<b><%= l.instalacion.codigo %></b>
+									<%end%>
+								</td>
+								<td><%= l.direccion %></td>
+
+								<td>
+									<% if !l.comuna.nil? %>	
+										<b><%= l.comuna.nombre %></b>
+									<%end%>
+								</td>
+								<td>
+									<% if !l.tipo_lectura.nil? %>
+										<%= l.tipo_lectura.nombre %>
+									<%end%>
+								</td>
+								<td>
+									<% if !l.detalle_orden_lectura.nil? %>
+										<%= l.detalle_orden_lectura.first.fecha_ejecucion.strftime(' %e/%m/%Y') %>
+									<% end %>
+								</td>
+								<td>
+									<% if !l.detalle_orden_lectura.nil? %>
+										<%= l.detalle_orden_lectura.first.fecha_ejecucion.strftime('%I:%M:%S') %>
+									<% end %>
+								</td>
+								<td>
+									<% if !l.detalle_orden_lectura.nil? %>
+										<%= l.detalle_orden_lectura.first.lectura_actual %></td>
+									<% end %>
+								<td>
+									<% if !l.detalle_orden_lectura.first.clave_lectura.nil? %>
+									
+										<%= l.detalle_orden_lectura.first.clave_lectura.codigo %>
+									<% end %>
+								</td>
+							</tr>
+						<% end %>
+					<% end %>
+				</tbody>
+			</table>
+			<div class="row">
+				<center>
+					<% if !@lista.nil? %>
+						<%= will_paginate @ordenes, renderer: BootstrapPagination::Rails %>
+					<% end %>
+				</center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal Fotografia -->
+<div id="modal1">
+	<div id="modalFotografia" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content" >
+      <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<br>
+        <div class="panel panel-default" id="panel-titulos">
+						<div class="panel-body">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+								<li class="breadcrumb-item">Lectura </li>
+								<li class="breadcrumb-item">Operaciones </li>
+								<li class="breadcrumb-item"><%=link_to 'Historico Lecturas de un Cliente', lectura_analisis_online_historico_lecturas_path%></li>
+								<li class="breadcrumb-item active">Fotografias</li>
+							</ol>
+						</div>
+					</div> 
+      </div>
+      <div class="modal-body">
+            <%= render 'carga_fotografia' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Modal Mostrar Ubicación -->
+<div id="modal2">
+	<div id="modalUbicacion" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<!-- Modal content-->
+			<div class="modal-content"  >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button><br>
+					<div class="panel panel-default" id="panel-titulos">
+						<div class="panel-body">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+								<li class="breadcrumb-item">Lectura </li>
+								<li class="breadcrumb-item">Operaciones </li>
+								<li class="breadcrumb-item"><%=link_to 'Historico Lecturas', lectura_operaciones_monitor_lectores_path%></li>
+								<li class="breadcrumb-item active">Ubicación Lectura</li>
+							</ol>
+						</div>
+					</div>      
+				</div>
+				<div class="modal-body">
+					<div id="ubicacion">
+						<%= render partial: 'carga_ubicacion' %>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal" >Cerrar</button>
+					<button type="button" class="btn btn-success  pull-left" onclick="mapa();">Refrescar Mapa</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+  
+  // # > Mensajes de los botones
+  $(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();
+		$('.pagination a').attr('data-remote', 'true')
+  });
+	
+	// # > Muestra la Ubicación del Lector
+	function mostrarUbicacion(orden_id){
+    $.ajax({
+			url:"<%=url_for :controller => 'historico_lecturas', :action => 'carga_ubicacion', :format => :js %>",
+      data:'orden_id=' + encodeURIComponent(orden_id),
+      cache:false,
+      success:function (data) {}
+					})
+    $('#modalUbicacion').modal();
+    mapa();
+  }
+
+  // # > Mostrar Fotografias
+  function mostrarFotografias(orden_id){
+    $.ajax({
+      url:"<%=url_for :controller => 'historico_lecturas',:action => 'carga_fotografia', :format => :js %>",
+      data:'id_orden=' + encodeURIComponent(orden_id),
+      cache:false,
+      success:function (data) {}
+    })
+    $('#modalFotografia').modal();
+	}
+
+	// # >  Exportar CSV
+	function exportarExcel(){
+		var seleccion = document.getElementById("seleccion").value;
+	  var busqueda = document.getElementById("busqueda").value;
+			url = "<%=url_for :controller => 'historico_lecturas',:action => 'exportar_csv' %>",
+				location.href= url + '?seleccion=' + encodeURIComponent(seleccion)+
+														 '&busqueda=' + encodeURIComponent(busqueda);
+	}
+
+	// # > Exportar PDF
+	function exportarPdf(){
+		var seleccion = document.getElementById("seleccion").value;
+	  var busqueda = document.getElementById("busqueda").value;
+			url = "<%=url_for :controller => 'historico_lecturas',:action => 'exportar_pdf', :format => :js %>",
+				location.href= url + '?seleccion=' + encodeURIComponent(seleccion)+
+														 '&busqueda=' + encodeURIComponent(busqueda);
+	}
+</script>

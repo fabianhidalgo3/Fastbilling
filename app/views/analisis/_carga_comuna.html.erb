@@ -1,0 +1,11 @@
+<div id="carga_comuna">
+	<% if !@comuna.nil? then %>
+		<label for="">Comunas:</label>
+  	<%= select_tag "Comuna", options_from_collection_for_select(@comuna, "id", "codigo_nombre"),
+  								 :prompt=> "Seleccione", :class => "form-control input-sm" %>
+  <%else%>
+  	<label for="">Comuna</label>
+    <select name="Comuna" id="Comuna" class="form-control input-sm">
+    <option value="">Seleccione Comuna</option></select>
+  <%end%>
+</div>

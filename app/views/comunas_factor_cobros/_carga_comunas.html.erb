@@ -1,0 +1,8 @@
+<div class="field" id="comunas">
+  <% if !@comunas.nil? %>
+	  <% @comunas.each do |comuna| %>
+		  <label><%= check_box_tag 'comuna_ids[]', comuna[0] -%></label>
+      <label><%= label_tag  comuna[1] -%></label>
+	  <% end %>
+  <%end%>
+</div>

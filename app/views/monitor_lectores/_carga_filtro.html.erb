@@ -1,0 +1,121 @@
+<div id="filtro">
+	<div class="panel panel-default">
+		<div class="panel-heading"><b>Lectores en Terreno</b> <span class="mdi mdi-google-maps"></span></div>
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table class="table table-condensed table-hover table-striped table-bordered animated fadeIn fast">
+					<thead>
+						<tr>
+							<th><span class="mdi mdi-settings"></span></th>
+							<th style="width:25%">Lector</th>
+							<th style="width:12%">Porción</th>
+							<th style="width:12%">Unidad de Lectura</th>
+							<th>Total Asignación</th>
+							<th>Cargado</th>
+							<th>Pendientes de Visita</th>
+							<th>Efectivo</th>
+							<th>No Efectivo</th>
+							<th>Leído</th>
+							<th>Verificaciones</th>
+							<th>% Efectividad</th>
+							<th>Hora Inicio</th>
+							<th>Hora Término</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if !@lista.nil?%>
+							<% @lista.each do |l| %>
+								<tr>
+									<td>
+										<button type="button" class="btn btn-primary btn-sm" onclick="mostrarModal('<%= l[12] %>', '<%=l[13]%>'); mapa();" data-toggle="tooltip" data-placement="top" title="Recorrido Lector">
+											<span class="mdi mdi-map-marker"></span>
+										</button>
+									</td>
+									<td><b><%= l[0]%></b></td>
+									<td><b><%= l[15]%></b></td>
+									<td><b><%= l[1]%></b></td>
+									<td><span class="label label-info"><%= l[2]%></span></td>			
+									<td><span class="label label-success"><%= l[3]%></span></td>
+									<td><span class="label label-danger"><%= l[6]%></span></td>
+									<td><span class="label label-info"><%= l[4]%></span></td>
+									<td><span class="label label-warning"><%= l[5]%></span></td>
+									<td><span class="label label-success"><%= l[7]%></span></td>
+									<td><span class="label label-primary"><%= l[14]%></span></td>									
+									<td style="font-size:16px"><b><%= l[8]%> %</b></td>
+									<td><b><%= l[9]%> </b></td>
+									<td><b><%= l[10]%> </b></td>
+								</tr>
+							<% end %>
+						<% end %>
+					</tbody>
+					<tfooter>
+						<tr>
+							<td colspan="4"><label>Totales: </label></td>
+							<% if !@totales.nil? %>
+								<td><span class="label label-info"><%= @totales[0]%></span></td>
+								<td><span class="label label-success"><%= @totales[1]%></span></td>
+								<td><span class="label label-danger"><%= @totales[2]%></span></td>
+								<td><span class="label label-info"><%= @totales[3]%></span></td>
+								<td><span class="label label-warning"><%= @totales[4]%></span></td>
+								<td><span class="label label-success"><%= @totales[5]%></span></td>
+								<td><span class="label label-primary"><%= @totales[6]%></span></td>
+								<td style="font-size:16px"><b><%= @totales[7]%> % </b></td>
+								<td colspan="2"> -- </td>
+							<% end %>
+						</tr>
+					</tfooter>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal Mostrar Ubicación -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content"  >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button><br>
+				<div class="panel panel-default" id="panel-titulos">
+					<div class="panel-body">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+							<li class="breadcrumb-item">Lectura </li>
+							<li class="breadcrumb-item">Operaciones </li>
+							<li class="breadcrumb-item"><%=link_to 'Monitoreo de Lectores en Terreno', lectura_operaciones_monitor_lectores_path%></li>
+							<li class="breadcrumb-item active">Recorrido del Lector</li>
+						</ol>
+					</div>
+				</div>      </div>
+      <div class="modal-body">
+        <%= render 'carga_ubicacion' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"><span class="mdi mdi-close-circle-outline"></span> Salir</button>
+        <button type="button" class="btn btn-secondary  pull-left" onclick="mapa();"><span class="mdi mdi-refresh"></span> Refrescar Mapa</button>
+      </div>
+   </div>
+ </div>
+</div>
+
+
+<script type="text/javascript">
+  
+  //tooltip mensajes en los botones
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+   
+  //muestra modal con mapa de las ubicaciones del lector
+  function mostrarModal(x,y){
+    var ruta_id = x
+    var emp_id = y
+    $.ajax({url:"<%=url_for :controller => 'monitor_lectores',:action => 'carga_ubicacion' %>",
+            data:'ruta_id=' + encodeURIComponent(ruta_id) + "&" + 'emp_id=' + encodeURIComponent(emp_id),
+            cache:false,
+            success:function (data) {}})
+    $('#myModal').modal();
+    mapa();
+  }
+
+</script>

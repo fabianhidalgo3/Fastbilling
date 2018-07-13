@@ -1,0 +1,35 @@
+<div id="desasignacion_parcial">
+	
+	<% if @completado_uno == 0%>
+		<script>
+			Push.create("", {
+				body: "Desasignación Completada Exitosamente",
+				icon: '<%= asset_path('correcto.png') %>',
+				timeout: 4000,
+				onClick: function () {
+						window.focus();
+						this.close();
+				}
+			})
+			$('#modalDesasignacion'); 		
+			cargarTablaDesasignacion('<%=@ruta_seleccionada_id%>', '<%=@lector_id%>', '<%=@tipo_lectura_id%>');		
+		</script>
+	<%end%>
+
+	<% if @completado_uno == 1 %>
+		<script>
+			Push.create("", {
+				body: "Desasignación Completada Exitosamente",
+				icon: '<%= asset_path('correcto.png') %>',
+				timeout: 4000,
+				onClick: function () {
+					window.focus();
+					this.close();
+				}
+			})
+			$('#modalDesasignacion').modal('hide'); 				
+			var tiempo = setTimeout(cargar_filtros, 3000);
+		</script>
+	<%end%>
+
+</div>

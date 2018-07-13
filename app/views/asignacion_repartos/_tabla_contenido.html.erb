@@ -1,0 +1,268 @@
+<div id="tabla_contenido">
+	<div class="panel panel-default">
+		<div class="panel-heading"><b>Resultados de la Busqueda</b> <span class="mdi mdi-table-large"></span></div>
+			<div class="panel-body">
+				<div class="table-responsive">
+					<table class="table table-striped table-hover table-condensed table-bordered animated fadeIn">
+						<thead>
+							<tr>
+								<th style="width:20%">Repartidor</th>
+								<th style="width:10%" colspan="2"><span class="mdi mdi-checkbox-multiple-marked-circle mdi-tabla-contenido"></span></th>
+								<th>Porción</th>
+								<th style="width:10%">U. de Reparto</th>
+								<th>Comuna</th>
+								<th>Cantidad de Documentos</th>
+								<th>Facturas</th>
+								<th>Boletas</th>
+								<th>Notas Crédito</th>
+								<th>Notas Debito</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% if @variable == 0 %>
+								<% if !@lista.nil? %>
+									<% @lista.each do |l| %>
+										<tr>
+											<td>
+												<% if !@listaEmpleados.nil?  %>
+													<%= select_tag "Empleado" + l[8].to_s, options_from_collection_for_select(@listaEmpleados, "id", "nombre_completo"), :prompt => "Seleccione", :class => "form-control input-sm" %>
+												<% else %>
+													<select id="Empleado"  class="input input-sm form-control">
+														<option>Seleccione</option>
+													</select>
+												<% end %>
+											</td>
+											<td>
+												<button onclick="asignacionCompleta('<%=l[8].to_s%>', '<%=l[9].to_s %>');" class="btn btn-info btn-xs" type="button"
+																data-toggle="tooltip" data-placement="top" title="Asignación Completa" >
+													<i class="mdi mdi-check-circle mdi-8px" style="color:white"></i>
+												</button>
+											</td>
+											<td>
+												<button onclick="mostrarModalAsignacion('<%= l[8]%>', '<%= l[9] %>');"
+																data-toggle="tooltip" data-placement="top" title="Asignación Parcial" class="btn btn-success btn-xs">
+													<i class="mdi mdi-checkbox-multiple-marked mdi-8px" style="color:white;"></i>
+												</button>
+											</td>
+											<td><%= l[0]%></td>
+											<td><%= l[1]%></td>
+											<td><b><%= l[2] %></b></td>
+											<td><b><span class="label label-info"><%= l[3]%></span></b></td>
+											<td><b><span class="label label-danger"><%= l[4]%></span></b></td>
+											<td><b><span class="label label-danger"><%= l[5]%></span></b></td>
+											<td><b><span class="label label-danger"><%= l[6]%></span></b></td>
+											<td><b><span class="label label-danger"><%= l[7]%></span></b></td>
+										</tr>
+									<% end %>
+								<% end %>
+							<% end %>
+							<%if @variable == 1 %>
+								<% if !@lista.nil? %>
+									<% @lista.each do |l| %>
+										<tr>
+											<td><b><%= l[0]%></b></td>
+											<td>
+												<button onclick="desasignacionCompleta('<%= l[9]%>', '<%= l[10] %>', '<%= l[11] %>');" class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="top" title="Desasignación Completa" ><i class="mdi mdi-close-circle mdi-8px" style="color:white"></i></button>
+											</td>
+											<td>
+												<button onclick="mostrarModal('<%= l[7]%>', '<%= l[8] %>', '<%= l[9] %>', '<%= l[10] %>');" class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="top" title="Desasignación Parcial" ><i class="mdi mdi-checkbox-multiple-marked mdi-8px" style="color:white;"></i>
+												</button>
+											</td>
+
+											<td><%= l[1]%></td>
+											<td><%= l[2]%></td>
+											<td><b><%= l[3] %></b></td>
+											<td><span class="label label-info"><b><%= l[4]%></b></b></td>
+											<td><b><span class="label label-danger"><%= l[5]%></span></b></td>
+											<td><b><span class="label label-danger"><%= l[6]%></span></b></td>
+											<td><b><span class="label label-danger"><%= l[7]%></span></b></td>
+											<td><b><span class="label label-danger"><%= l[8]%></span></b></td>
+										</tr>
+									<% end %>
+								<% end %>
+							<% end %>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--Muestran mensajes de asignacion completada -->
+<div>
+    <%= render 'alertas' %>
+</div>
+
+
+<!-- Modal Asignación Parcial -->
+<div class="modal1">
+  <div id="modalAsignacion" class="modal fade modalAsignacion" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content" style="width: 850px" >
+        <div class="modal-header">
+      		<button type="button" class="close" data-dismiss="modal">&times;</button><br>
+          <div class="panel panel-default">
+					  <div class="panel-body">
+					    <ol class="breadcrumb">
+					      <li class="breadcrumb-item">
+					      	<%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%>
+					      </li>
+					      <li class="breadcrumb-item">Reparto </li>
+					      <li class="breadcrumb-item">Operaciones</li>
+					      <li class="breadcrumb-item">Asignaciones de Repartos</li>
+					      <li class="breadcrumb-item active">Asignación Parcial</li>
+					    </ol>
+					  </div>
+					</div>
+        </div>
+        <div class="modal-body" id="modal-body">
+        	<%= render 'dividir_ruta_asignacion' %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+        <div id="asignacion_parcial">
+          <%= render 'asignacion_parcial' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Desasignación Parcial -->
+<div class="modal2">
+  <div id="modalDesasignacion" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content" style="width: 850px" >
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button><br>
+           <div class="panel panel-default">
+					  <div class="panel-body">
+					    <ol class="breadcrumb">
+					      <li class="breadcrumb-item">
+					      	<%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%>
+					      </li>
+					      <li class="breadcrumb-item">Reparto </li>
+					      <li class="breadcrumb-item">Operaciones</li>
+					      <li class="breadcrumb-item">Asignaciones de Repartos</li>
+					      <li class="breadcrumb-item active">Desasignación Parcial</li>
+					    </ol>
+					  </div>
+					</div>
+        </div>
+        <div class="modal-body">
+          <%= render 'dividir_ruta_desasignacion' %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+        <div id="desasignacion_parcial">
+          <%= render 'desasignacion_parcial' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+  	$('[data-toggle="tooltip"]').tooltip();
+  });
+
+	function asignacionCompleta(ruta, tipo_reparto){
+		empleado = document.getElementById("Empleado" + ruta).value
+		tipo_reparto_id = tipo_reparto
+		if($("#Empleado" + ruta + " option:selected").val() == 0) {
+			Push.create("", {
+				body: "Debe Seleccionar un Repartidor",
+				icon: "<%= asset_path('user-unselect.png') %>",
+				timeout: 5000,
+				onClick: function () {
+					window.focus();
+					this.close();
+				}
+			})
+      return false;
+		}
+		else {
+			$.ajax({
+				url:"<%=url_for :controller => 'asignacion_repartos',:action => 'asignacion_completa'%>",
+				data:'ruta=' + encodeURIComponent(ruta)+
+					 	 '&empleado=' + encodeURIComponent(empleado) +
+					   '&tipo_reparto=' + encodeURIComponent(tipo_reparto),
+				cache:false,
+				success:function (data) {}
+			})
+		}
+	}
+
+	function desasignacionCompleta(ruta, tipo_reparto, empleado){
+		$.ajax({
+			url:"<%=url_for :controller => 'asignacion_repartos',:action => 'desasignacion_completa'%>",
+			data:'ruta=' + encodeURIComponent(ruta)+
+					'&tipo_reparto=' + encodeURIComponent(tipo_reparto) +
+					'&empleado=' + encodeURIComponent(empleado),
+			cache:false,
+			success:function (data) {}
+		})
+	}
+
+	function mostrarModalAsignacion(ruta, tipo_reparto){
+		empleado = document.getElementById("Empleado" + ruta).value
+		if($("#Empleado" + ruta + " option:selected").val() == 0) {
+			Push.create("", {
+				body: "Debe Seleccionar un Repartidor",
+				icon: "<%= asset_path('user-unselect.png') %>",
+				timeout: 5000,
+				onClick: function () {
+					window.focus();
+					this.close();
+				}
+			})
+			return false;
+		}
+		else {
+			$.ajax({
+				url:"<%=url_for :controller => 'asignacion_repartos',:action => 'dividir_ruta_asignacion'%>",
+				data:'ruta=' + encodeURIComponent(ruta)+
+						'&empleado=' + encodeURIComponent(empleado) +
+						'&tipo_reparto=' + encodeURIComponent(tipo_reparto),
+				cache:false,
+				success:function (data) {}
+			})
+		}
+		$('#modalAsignacion').modal();
+	}
+
+	function mostrarModalDesasignacion(ruta, tipo_reparto){
+		empleado = document.getElementById("Empleado" + ruta).value
+		if($("#Empleado" + ruta + " option:selected").val() == 0) {
+			Push.create("", {
+				body: "Debe Seleccionar un Repartidor",
+				icon: "<%= asset_path('user-unselect.png') %>",
+				timeout: 5000,
+				onClick: function () {
+					window.focus();
+					this.close();
+				}
+			})
+			return false;
+		}
+		else {
+			$.ajax({
+				url:"<%=url_for :controller => 'asignacion_repartos',:action => 'dividir_ruta_desasignacion'%>",
+				data:'ruta=' + encodeURIComponent(ruta)+
+						'&empleado=' + encodeURIComponent(empleado) +
+						'&tipo_reparto=' + encodeURIComponent(tipo_reparto),
+				cache:false,
+				success:function (data) {}
+			})
+		}
+		$('#modalAsignacion').modal();
+	}
+</script>

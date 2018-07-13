@@ -1,0 +1,18 @@
+<div id="desasignacion_completa">
+	<% if !@completado_dos.nil?%>
+	<script>
+		Push.create("", {
+			body: "Desasignación Completada Exitosamente",
+			icon: '<%= asset_path('correcto.png') %>',
+			timeout: 4000,
+			onClick: function () {
+					window.focus();
+					this.close();
+			}
+		})
+		$('#modalDesasignacion').modal('hide'); 
+		cargar_filtros();
+	</script>
+		<%= @completado_dos %>
+	<%end%>
+</div>

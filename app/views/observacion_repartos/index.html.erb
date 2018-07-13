@@ -1,0 +1,80 @@
+<title>Observaciones de Repartos</title>
+<div class="panel panel-default" id="panel-titulos">
+	<div class="panel-body">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+	  	<li class="breadcrumb-item">Catastro</li>
+	  	<li class="breadcrumb-item active">Observaciones de Reparto</li>
+		</ol>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-12">
+				<p>Exportar:</p><hr>
+				<button onclick="exportarPdf();" type="button" class="btn btn-pdf btn-sm"><span class="mdi mdi-file-pdf mdi-18px"></span></button>
+				<button onclick="exportarCsv();" type="button" class="btn btn-excel btn-sm"><span class="mdi mdi-file-excel mdi-18px"></span></button>
+				<br><br>
+				<tr>
+					<th>Cant. Observaciones:</th>
+					<th></th>
+					<th><strong><%= @observacion_repartos.count %></strong></th>
+				</tr>
+			</div>
+		</div>
+		<hr>
+		<div class="table-responsive">
+			<table class="table table-condensed table-striped table-hover table-bordered">
+				<thead>
+					<tr>
+						<th style="width: 60%">Descripción</th>
+						<th>Código</th>
+						<th>Reparto Efectivo</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @observacion_repartos.each do |observacion_reparto| %>
+						<% if !observacion_reparto.efectivo %>	
+							<tr class="danger">
+						<% else %>
+							<tr class="success">
+						<% end %>
+								<td><%= observacion_reparto.observacion %></td>
+								<td><b><%= observacion_reparto.codigo%></b></td>
+								<td>
+								<b>
+									<% if observacion_reparto.efectivo %>
+										<b>Si</b>
+									<% else%>
+										<b>No</b>
+									<%end%>
+								</b>
+							</td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+		<br>
+		<div class="row">
+				<center>
+						<%= will_paginate @usuarios, renderer: BootstrapPagination::Rails %>
+				</center>
+		</div>
+	</div>
+</div>
+<!-- # > Funciones Js -->
+ <script type="text/javascript">
+	// # > Exportar CSV
+	function exportarCsv(){
+		url = "<%=url_for :controller => 'observacion_repartos',:action => 'exportar_csv' %>",
+		location.href= url;
+	}
+	// # > Exportar PDF
+	function exportarPdf(){
+  	url = "<%=url_for :controller => 'observacion_repartos',:action => 'exportar_pdf', :format => :pdf %>",
+    location.href= url;
+	}
+
+</script>

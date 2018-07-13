@@ -1,0 +1,2 @@
+class ProcesoLectura < ApplicationRecord
+end

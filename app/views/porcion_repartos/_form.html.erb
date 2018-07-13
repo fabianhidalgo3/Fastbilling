@@ -1,0 +1,16 @@
+<%= simple_form_for(@porcion_reparto) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :codigo %>
+    <%= f.input :nombre %>
+    <%= f.input :ano %>
+    <%= f.input :mes %>
+    <%= f.association :zona %>
+    <%= f.association :subempresa %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

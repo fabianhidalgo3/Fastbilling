@@ -1,0 +1,79 @@
+<title>Monitoreo de Lectores en Terreno</title>
+<div class="panel panel-default" id="panel-titulos">
+	<div class="panel-body">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+			<li class="breadcrumb-item">Lectura </li>
+			<li class="breadcrumb-item">Operaciones </li>
+	  	<li class="breadcrumb-item active">Monitoreo de Lectores en Terreno</li>
+		</ol>
+	</div>
+</div>
+<div class="well well-sm">
+	<b>Visualizador de coordeneadas GPS  por  <mark>Unidad de lectura</mark> y <mark>Empleado</mark></b>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="panel panel-default">
+					<div class="panel-heading"><%= label_tag ( "Rangos de Fecha: ") %></div>
+					<div class="panel-body">
+						<%= label_tag ( "Desde: ") %>
+						<%= select_day(Date.today, class: "form-control",field_name: 'dia-desde',)%>
+						<%= select_month(Date.today,use_month_names: %w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre),  field_name: 'mes-desde') %>
+						<%= select_year(Date.today,start_year: 1992, end_year: 2099, field_name: 'ano-desde', :class => 'form-control') %>
+						<br>
+						<%= label_tag ( "Hasta: ") %> 
+						<%= select_day(Date.today, use_two_digit_numbers: true, class: "form-control",field_name: 'dia-hasta',)%>
+						<%= select_month(Date.today, use_month_names: %w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre),  field_name: 'mes-hasta') %>
+						<%= select_year(Date.today, start_year: 1992, end_year: 2099, field_name: 'ano-hasta', :class => 'form-control') %>
+					</div>
+				</div>			
+			</div>
+			<div class="col-md-3">
+				<label>Regiones:</label><br>
+				<%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "codigo_nombre"),
+					:prompt=> "Seleccione", :class =>"form-control input-sm"%> 
+			</div>
+			<div class="col-md-1">
+				<br>
+				<button type="button" class="btn btn-default form-control " onclick="mostrarTablaContenido();">
+					<span class="mdi mdi-magnify"></span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<%= render 'carga_filtro'%>
+	</div>
+</div>
+<script type="text/javascript">
+	// time_dudoso =  setInterval(carga_filtro,10000);
+	//Carga render del filtros
+	function mostrarTablaContenido() {
+		var zona = document.getElementById("Zona").value;
+		var dia_desde = document.getElementById("date_dia-desde").value;
+		var mes_desde = document.getElementById("date_mes-desde").value;
+		var ano_desde = document.getElementById("date_ano-desde").value;
+		var dia_hasta = document.getElementById("date_dia-hasta").value;
+		var mes_hasta = document.getElementById("date_mes-hasta").value;
+		var ano_hasta = document.getElementById("date_ano-hasta").value;
+		var hasta = dia_hasta + "/" + mes_hasta + "/" + ano_hasta;
+		var desde = dia_desde + "/" + mes_desde + "/" + ano_desde;
+		console.log(desde + " " + hasta + " " + zona);
+		$.ajax({
+			url: "<%=url_for :controller => 'monitor_lectores',:action => 'carga_filtro' %>",
+			data:'zona=' + encodeURIComponent(zona) +  "&" +
+					'desde=' + encodeURIComponent(desde) + "&" +
+					'hasta=' + encodeURIComponent(hasta),
+			cache: false,
+			success: function(data) {}
+		})
+	}
+
+
+</script>

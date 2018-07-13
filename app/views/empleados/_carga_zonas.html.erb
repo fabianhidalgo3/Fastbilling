@@ -1,0 +1,47 @@
+<div class="field" id="zonas">
+	<div class="col-md-12">
+		<div class="btn-group">
+			<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="mdi mdi-view-grid"></span>	Acciones Agrupadas <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><center><input type="checkbox" id="selectAll" value="selectAll"> <b>Seleccionar todo </b><span class="mdi mdi-checkbox-multiple-marked-outline"></span></input></center></li>
+			</ul>
+		</div>
+		<br><br><hr>
+		<%= label_tag "Regiones: " %><br>
+  	<% if !@zonas.nil? %>
+  		<% if @empleado.nil?%>
+	 			<% @zonas.each do |item| %>
+					<div class="col-md-12">
+							<label><%= check_box_tag 'zona_ids[]', item.id -%></label>
+							<%= label_tag  item.codigo_nombre -%>
+					</div>
+    		<% end %>
+      <% else %>
+      	<% @empleado.zona.each do |item| %>
+				<div class="col-md-12">
+					<label><%= check_box_tag 'zona_ids[]', item.id, {checked: true} -%></label>
+      		<%= label_tag  item.codigo_nombre -%>
+				</div>
+      	<% end %>
+	  	<% end %>
+ 		<% end %>
+	</div>	
+</div>
+<!-- # > Funciones Js -->
+<script type="text/javascript">
+// CheckBox Seleecionar Todo
+$('#selectAll').click(function() {
+    if (this.checked) {
+      $(':checkbox').each(function() {
+        this.checked = true;                        
+      });
+    } 
+    else {
+      $(':checkbox').each(function() {
+        this.checked = false;                        
+      });
+    } 
+  });
+</script>

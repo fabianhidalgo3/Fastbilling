@@ -1,0 +1,172 @@
+<div  id="dividir-ruta-asignacion" >
+  <%= form_tag  :controller => 'asignacions', :action => 'asignacion_parcial', :method => 'post', :id => 'nueva_asignacion', :multipart => true do %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-6">
+            <% if !@lector.nil? %>
+              <label for="">Empleado Selecionado</label>
+              <%= text_field_tag "lectores",@lector.nombre_completo, class: 'form-control input-sm', readonly: true%>
+              <%= hidden_field_tag "empleado_seleccionado",@lector.id, class: 'form-control input-sm'%>
+
+            <% end %>
+          </div>
+          <div class="col-md-6">
+            <% if !@ruta_seleccionada.nil? %>
+              <label for="">Ruta Seleccionada</label> 
+              <%= text_field_tag "ruta",@ruta_seleccionada.codigo, class: 'form-control input-sm', readonly: true%>
+              <%= hidden_field_tag "ruta_seleccionada",@ruta_seleccionada.id, class: 'form-control input-sm'%>
+            <% end %>
+        </div>
+      </div>
+      <br>
+      <div class="col-md-2">
+        <label for="">Desde</label>
+        <%= number_field_tag :desde,'', class: "form-control"%>
+      </div>
+      <div class="col-md-2">
+        <label for="">Hasta</label>
+        <%= number_field_tag :hasta,'', class: "form-control"%>
+      </div>
+      <div class="col-md-2">
+        <br>
+        <button type="button" value="Seleccionar" onclick="seleccionarOrdenes();" class="form-control btn btn-success btn-sm " >
+          Seleccionar <span class="mdi mdi-cursor-default-outline"></span>
+        </button>
+      </div>
+      <div class="col-md-3">
+        <br>
+        <button type="button" value="Asignar" onclick="asignacionParcial(0);" class="form-control btn btn-secundary btn-sm" >
+          Asignar y Seguir <span class="mdi mdi-content-save"></span>
+        </button>
+      </div>
+      <div class="col-md-3">
+        <br>
+        <button type="button" onclick="asignacionParcial(1);" class="form-control btn btn-primary btn-sm">
+          Asignar y Salir	<span class="mdi mdi-content-save"></span>  <span class="mdi mdi-exit-to-app"></span>
+        </button>
+      </div>
+    </div> 
+  </div>
+  <br>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="btn-group">
+            <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="mdi mdi-view-grid"></span>	Acciones Agrupadas <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><center><input type="checkbox" id="selectAll" value="selectAll"> <b>Seleccionar todo </b><span class="mdi mdi-checkbox-multiple-marked-outline"></span></input></center></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="tabla-responsive">
+        <table class="table table-striped table-bordered" >
+          <thead>
+            <tr>
+              <th> -- </th>
+              <th>Correlativo</th>
+              <th>Nº Boleta</th>  
+              <th>Dirección Orden</th>
+              <th>Tipo de Documento</th>
+              <th>Comuna</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if !@ordenes_repartos.nil? %>
+              <% @ordenes_repartos.each do |o|  %>
+                <tr>
+                  <td><label><%= check_box_tag 'orden_ids', o.id -%></label></td>
+                  <td><label><%= o.orden_ruta %></label></td>
+                  <td><label><%= o.numero_boleta%></label></td> 
+                  <td><label><%= o.direccion_entrega%></label></td>  
+                  <td><label><%= o.tipo_documento.nombre%></label></td>
+                  <td><label><%= o.comuna.nombre %></label></td>
+                </tr>
+              <% end %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+			<center>
+				<% if !@ordenes_repartos.nil? %>
+					<%= will_paginate @ordenes_repartos, renderer: BootstrapPagination::Rails %>
+				<% end %>
+			</center>
+		</div>
+<% end %>
+</div>
+<script type = "text/javascript"> 
+
+	$(function(){
+    $('.pagination a').attr('data-remote', 'true')
+  });
+
+  $('#selectAll').click(function() {
+    if (this.checked) {
+      $(':checkbox').each(function() {
+        this.checked = true;                        
+      });
+    } 
+    else {
+      $(':checkbox').each(function() {
+        this.checked = false;                        
+      });
+    } 
+  });
+
+  function seleccionarOrdenes(){
+    var desde = parseInt(document.getElementById("desde").value)
+    var hasta = 1 + parseInt(document.getElementById("hasta").value)
+    var check = $(':checkbox')
+    for (i = 0; i < check.length; i++){
+      check[i].checked = false;
+    }
+    for (i = desde; i < hasta; i++){
+      check[i].checked = true;
+    }
+  }
+
+  function asignacionParcial(id_boton_asignacion){
+		var empleado = document.getElementById("empleado_seleccionado").value;
+		var ruta = document.getElementById("ruta_seleccionada").value;
+		var ordenes = new Array();
+		var box = $(':checkbox')
+		for (i = 0; i < box.length; i++){
+			if (box[i].checked == true && box[i].value != "selectAll" && box[i].value != "selectAll_uno"  )
+			{
+				ordenes.push(box[i].value)
+			}
+		}
+		$.ajax({
+			url:"<%=url_for :controller => 'asignacion_repartos',:action => 'asignacion_parcial' %>",
+			data: 'ruta=' + encodeURIComponent(ruta)+ "&" + 
+						'empleado=' + encodeURIComponent(empleado)+ "&" + 
+						'ordenes=' + encodeURIComponent(ordenes)+ "&" + 
+						'id_boton_asignacion=' + encodeURIComponent(id_boton_asignacion),
+			cache:false,
+		success:function (data) {}
+		})
+	}
+
+  function refrescarTablaAsignacion(ruta,tipo_reparto, empleado){
+    console.log("ressass");
+		$.ajax({
+			url:"<%=url_for :controller => 'asignacion_repartos',:action => 'dividir_ruta_asignacion' %>",
+      data:'ruta=' + encodeURIComponent(ruta)+  
+           '&tipo_reparto=' + encodeURIComponent(tipo_reparto)+   
+					 '&empleado=' + encodeURIComponent(empleado),
+			cache:false,
+			success:function (data) {}
+		})
+	}
+
+   
+</script>

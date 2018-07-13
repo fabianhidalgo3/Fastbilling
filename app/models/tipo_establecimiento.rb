@@ -1,0 +1,2 @@
+class TipoEstablecimiento < ApplicationRecord
+end

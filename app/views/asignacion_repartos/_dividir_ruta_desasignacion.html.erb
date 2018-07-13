@@ -1,0 +1,114 @@
+<div  id="dividir_ruta_desasignacion" >
+  <%= form_tag  :controller => 'asignacions', :action => 'desasignacion_parcial', :method => 'get', :multipart => true do %>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-6">
+            <% if !@lector.nil? %>
+              <label for="">Empleado Selecionado</label>
+              <%= text_field_tag "lectores",@lector.nombre, class: 'form-control input-sm', readonly: true%>
+              <%= hidden_field_tag "empleado_seleccionado",@lector.id, class: 'form-control input-sm'%>
+
+            <% end %>
+          </div>
+          <div class="col-md-6">
+            <% if !@ruta_seleccionada.nil? %>
+              <label for="">Ruta Seleccionada</label> 
+              <%= text_field_tag "ruta",@ruta_seleccionada.codigo, class: 'form-control input-sm', readonly: true%>
+              <%= hidden_field_tag "ruta_seleccionada",@ruta_seleccionada.id, class: 'form-control input-sm'%>
+
+            <% end %>
+        </div>
+      </div>
+      <br>
+      <div class="col-md-4">
+        <label for="">Desde</label>
+        <%= number_field_tag :inferior,'', class: "form-control"%>
+      </div>
+      <div class="col-md-4">
+        <label for="">Hasta</label>
+        <%= number_field_tag :superior,'', class: "form-control"%>
+      </div>
+      <div class="col-md-2">
+        <br>
+        <button type="button" value="Seleccionar  " class="form-control btn btn-success btn-sm " onclick="seleccion_uno();" >Seleccionar</button>
+      </div>
+      <div class="col-md-2">
+        <br>
+        <button value="Desasignar" type="button" class="form-control btn btn-primary btn-sm" onclick="desasignacion_parcial();">Desasignar</button>
+      </div>
+    </div> 
+  </div>
+  <br>
+  <div class="tabla-responsive">
+    <table class="table table-hover table-condensed table-bordered" >
+      <thead>
+        <tr>
+          <th><input type="checkbox" id="selectAll_uno" value="selectAll_uno">Seleccionar todo</input></th>
+          <th>Correlativo Ruta</th>  
+          <th>Dirección Orden</th>
+          <th>Tipo de lectura</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if !@asignaciones.nil? %>
+          <% @asignaciones.each do |a|  %>
+            <tr>
+              <td><label><%= check_box_tag 'orden_ids[]', a.orden_reparto.id -%></label></td>
+              <td><label><%= a.orden_reparto.numero_boleta%></label></td> 
+              <td><label><%= a.orden_reparto.direccion_entrega%></label></td>  
+              <td><label><%= a.orden_reparto.tipo_reparto.descripcion%></label></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
+</div>
+<script type = "text/javascript"> 
+  //Boton seleccionar desasignacion parcial
+  function seleccion_uno(){
+    var inferior = 1 + parseInt(document.getElementById("inferior").value)
+    var superior = 2 + parseInt(document.getElementById("superior").value)
+    var selec = $(':checkbox')
+    for (i = 0; i < selec.length; i++){
+      selec[i].checked = false;
+    }
+    for (i = inferior; i < superior; i++){
+      selec[i].checked = true;
+    }
+  }
+    //boton Desasignacion Parcial
+  function desasignacion_parcial(){
+    var ordenes = new Array();
+    var box = $(':checkbox')
+    for (i = 0; i < box.length; i++){
+      if (box[i].checked == true)
+      {
+        ordenes.push(box[i].value)
+      }     
+    }
+    var empleado = document.getElementById("empleado_seleccionado").value;
+    var ruta = document.getElementById("ruta_seleccionada").value;
+    $.ajax({
+            url:"<%=url_for :controller => 'asignacion_repartos',:action => 'desasignacion_parcial' %>",
+            data:'ruta=' + encodeURIComponent(ruta)+ "&" + 'empleado=' + encodeURIComponent(empleado)+ "&" + 'ordenes=' + encodeURIComponent(ordenes),
+            cache:false,
+            success:function (data) {}
+        })
+  }
+  // CheckBox Seleecionar Todo
+  $('#selectAll_uno').click(function() {
+    if (this.checked) {
+      $(':checkbox').each(function() {
+        this.checked = true;                        
+      });
+    } 
+    else {
+      $(':checkbox').each(function() {
+        this.checked = false;                        
+      });
+    } 
+  });
+</script>

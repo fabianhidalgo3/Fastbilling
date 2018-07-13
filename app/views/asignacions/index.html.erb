@@ -1,0 +1,76 @@
+<title>Asignaciones de O.L </title>
+<div class="panel panel-default" id="panel-titulos">
+	<div class="panel-body">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+			<li class="breadcrumb-item">Lectura </li>
+			<li class="breadcrumb-item">Operaciones </li>
+	  	<li class="breadcrumb-item active">Asignaciones de Ordenes de Lectura</li>
+		</ol>
+	</div>
+</div> 
+<hr>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-3">
+					<label>Región:</label>
+					<%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "codigo_nombre"), :onchange => 'cargarPorciones();', :prompt=> "Seleccione", :class => "form-control input-sm"%>
+				</div>
+				<div class="col-md-3" >
+					<label>Porción:</label>
+					<%= render 'carga_porciones' %>
+				</div>
+				<div class="col-md-2">
+					<label>Tipo de Lecturas:</label>
+					<%=select_tag "Tipo_lectura", options_from_collection_for_select(@tipo_lectura, "id", "nombre"), :prompt=> "Seleccione", :class => "form-control input-sm"%>
+				</div>
+				<div class="col-md-2">
+					<label>Estado de Lecturas:</label>
+					<%=select_tag "Estado", options_from_collection_for_select(@estados, "id", "nombre"), :prompt=> "Seleccione", :class => "form-control input-sm"%>
+				</div>
+				<div class="col-md-1">
+					<label for=""></label>
+					<button type="button" class="form-control btn btn-default btn-sm" onclick="cargar_filtros();">
+						<span class="mdi mdi-magnify"></span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<div>
+	<%= render 'carga_filtro' %>
+</div>
+
+<script type="text/javascript">
+	function cargar_filtros() {
+		/*Carga las porciones disponibles de una zona */
+		var porcion = document.getElementById("Porcion").value;
+		var proceso = document.getElementById("Tipo_lectura").value;
+		var zona = document.getElementById("Zona").value;
+		var Estado = document.getElementById("Estado").value;
+		$.ajax({
+			url: "<%=url_for :controller => 'asignacions',:action => 'carga_filtro' %>",
+			data: 'porcion=' + encodeURIComponent(porcion) + "&" + 'proceso=' + encodeURIComponent(proceso) +"&" + 
+						'zona=' + encodeURIComponent(zona)+ "&" + 'Estado=' + encodeURIComponent(Estado),
+			cache: false,
+			success: function(data) {}
+		})
+	}
+	
+	function cargarPorciones() {
+		/*Carga las porciones disponibles de una zona */
+		var zona = document.getElementById("Zona").value;
+		$.ajax({
+			url: "<%=url_for :controller => 'asignacions',:action => 'carga_porciones' %>",
+			data: 'zona=' + encodeURIComponent(zona),
+			cache: false,
+			success: function(data) {}
+		})
+
+	}
+</script>

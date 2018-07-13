@@ -1,0 +1,66 @@
+<h3>Clientes con N Veces Sin Lectura Efectiva</h3>
+<hr>
+<div class="row">
+	<div class="col-md-12">
+		<div class="col-md-2">
+			<label for="">Zonas</label>
+			<%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "nombre"), :prompt=> "Seleccionar", :class => "form-control input-sm" , :onchange => 'carga_porciones();carga_comunas(); '%>
+		</div>
+		<div class="col-md-2">
+			<label for="">Porción</label>
+			<%= render 'carga_porciones' %>
+
+		</div>
+		<div class="col-md-2">
+			<label for="">Proceso</label>
+			<%=select_tag "tipo_lectura", options_from_collection_for_select(@tipo_lectura, "id", "nombre"), :prompt=> "Seleccione" , :class => "form-control input-sm"%>
+		</div>
+		<div class="col-md-2">
+			<label for="">Comuna</label>
+			<%= render 'carga_comunas' %>
+		</div>
+		<div class="col-md-2">
+			<br>
+			<button type="button" onclick="carga_filtro();" class="btn btn-primary form-control"><span style="color:white" class="mdi mdi-magnify"></span> Buscar</button>
+		</div>
+	</div>
+</div>
+<%= render 'carga_filtro'%>
+<script>
+		// Carga Comunas
+	function carga_comunas() {
+		var zona = document.getElementById("Zona").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_tres',:action => 'carga_comunas' %>",
+            data: 'zona=' + encodeURIComponent(zona),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+		//Carga Porciones
+	function carga_porciones() {
+		var zona = document.getElementById("Zona").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_tres',:action => 'carga_porciones' %>",
+            data: 'zona=' + encodeURIComponent(zona),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+	function carga_filtro(){
+		var zona = document.getElementById("Zona").value;
+		var porcion = document.getElementById("Porcion").value;
+		var proceso = document.getElementById("tipo_lectura").value;
+		var comuna = document.getElementById("Comuna").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_tres',:action => 'carga_filtro' %>",
+            data: 'zona=' + encodeURIComponent(zona)+ "&" + 'porcion=' + encodeURIComponent(porcion)+ "&" + 'proceso=' + encodeURIComponent(proceso)+ "&" + 'comuna=' + encodeURIComponent(comuna),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+	
+	$(function(){
+    	$('.pagination a').attr('data-remote', 'true')
+	});
+</script>

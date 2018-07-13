@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Factor cobro:</strong>
+  <%= @factor_comuna.factor_cobro %>
+</p>
+
+<p>
+  <strong>Comuna:</strong>
+  <%= @factor_comuna.comuna %>
+</p>
+
+<%= link_to 'Edit', edit_factor_comuna_path(@factor_comuna) %> |
+<%= link_to 'Back', factor_comunas_path %>

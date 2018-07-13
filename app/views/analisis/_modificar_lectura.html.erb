@@ -1,0 +1,47 @@
+<div id="modificar_lectura">
+	<div class="row">
+		<div class="col-md-4"></div>
+	  <div class="col-md-4">
+	  	<label for="">Lectura Actual:</label><br>
+	  	<% if !@orden_lectura.nil? %>
+	    	<input type="text" id="Lectura" name="Lectura" value="<%=@orden_lectura.lectura_actual%>" class="form-control">
+	    	<br>
+	      <button onclick="guardar_lectura('<%= @orden_lectura.id %>');"  type="button" class="btn btn-success pull-right" required="true">Guardar</button>
+	    <% else %>
+	    	<input type="text" name="" value="" class="form-control" disabled="">
+	    	<br>
+	    	<button onclick="alert("Error")"  type="button" class="btn btn-success pull-right" required="true">Guardar</button>
+	    <% end %>
+	   </div>
+	   <div class="col-md-4"></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	function guardar_lectura(id){
+		var lectura = document.getElementById("Lectura").value;
+    $.ajax({
+      url:"<%=url_for :controller => 'analisis',:action => 'guardar_lectura' %>",
+      data:'lectura=' + encodeURIComponent(lectura) + '&id=' + encodeURIComponent(id),
+      cache:false,
+      success:function (data) {}
+    })
+    $('#modalMlectura').modal('hide');
+    $('#modalMlectura').modal('hide');
+    $('#modalReleer').modal('hide');
+
+    try {
+    	mostrar_dudosos_max();
+		}
+		catch(err) {
+		}
+
+		try {
+    	mostrar_dudosos_min();
+		}
+		catch(err) {
+		}
+  }	
+
+</script>

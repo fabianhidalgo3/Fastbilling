@@ -1,0 +1,37 @@
+<div class="panel panel-default">
+	<div class="panel-body">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+			<li class="breadcrumb-item">Repartos </li>
+			<li class="breadcrumb-item">Reportes </li>
+	  	<li class="breadcrumb-item active">Devoluciones</li>
+		</ol>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+		<div class="col-md-12">
+			<div class="col-md-2">
+				<label>Zona:</label>
+				<%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "codigo_nombre"), :onchange => 'carga_filtro();', :prompt=> "Seleccione", :class => "form-control input-sm"%>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<div>
+	<%= render 'carga_filtro' %>
+</div>
+
+<script>
+	function carga_filtro(){
+		var zona = document.getElementById("Zona").value;		
+		$.ajax({
+			url: "<%=url_for :controller => 'reporte_devoluciones',:action => 'carga_filtro' %>",
+			data: 'zona=' + encodeURIComponent(zona),
+			cache: false,
+			success: function(data) {}
+		})
+	}
+</script>

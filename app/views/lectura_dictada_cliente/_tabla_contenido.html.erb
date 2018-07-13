@@ -1,0 +1,90 @@
+<div id="tabla-contenido">
+  <div class="panel panel-default">
+    <div class="panel-heading"><b>Lecturas Anteriores</b> <span class="mdi mdi-file-multiple"></span></div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table table-condensed table-hover table-striped table-bordered animated fadeIn fast">
+          <thead>
+            <tr>
+              <th>Orden lectura</th>
+              <th>Comuna</th>
+              <th>Tipo lectura</th>
+              <th>Mes/Año</th>
+              <th>Fecha asignación</th>
+              <th>Fecha lectura</th>
+              <th>Empleado (Lector)</th>
+              <th>Estado</th>
+              <th>Clave lectura actual</th>
+              <th>Clave lectura anterior</th>
+              <th>Lectura actual</th>
+              <th>Lectura Dictada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if !@listaOrdenes.nil?%>
+              <% @listaOrdenes.each do |orden| %>
+                <tr>
+                  <td><%= orden[0] %></td>
+                  <td><%= orden[1] %></td>
+                  <td><%= orden[2] %></td>
+                  <td><%= orden[3] %></td>
+                  <td><%= orden[4] %></td>
+                  <td><%= orden[5] %></td>
+                  <td><%= orden[6] %></td>
+                  <td><%= orden[7] %></td>
+                  <td><%= orden[8] %></td>
+                  <td><%= orden[9] %></td>
+                  <td><%= orden[10] %></td>
+                  <td><%= orden[11] %></td>
+                </tr>
+              <% end%>
+            <% end%>   
+          <tbody>
+        </table>
+      </div>      
+    </div>
+  </div>
+</div>
+
+<div id="Modal2">
+  <div id="modalLecturaDictada" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="panel panel-default" id="panel-titulos">
+            <div class="panel-body">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+                <li class="breadcrumb-item">Lectura </li>
+                <li class="breadcrumb-item">Analisis Online </li>
+                <li class="breadcrumb-item ">Lectura Dictada por Cliente</li>
+                <li class="breadcrumb-item active">Agregar Lectura</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <%= render 'form_lectura_dictada' %>
+        <div class="modal-footer">
+          <button  type="button" class="btn btn-primary" data-dismiss="modal"><span class="mdi mdi-close-circle-outline"></span> Salir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript"> 
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+  function mostrarModalAgregarLecturaDictada(orden_id){
+    $.ajax({
+      url: "<%=url_for :controller => 'lectura_dictada_cliente',:action => 'form_lectura_dictada' %>",
+      data: 'orden_id=' + encodeURIComponent(orden_id),
+      cache: false,
+      success: function(data) {}
+    })
+    $("#modalLecturaDictada").modal();
+  }
+</script>

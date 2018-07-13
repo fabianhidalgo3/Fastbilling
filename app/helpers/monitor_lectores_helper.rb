@@ -1,0 +1,2 @@
+module MonitorLectoresHelper
+end

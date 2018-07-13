@@ -1,0 +1,7 @@
+<div id="provincias">
+  <% if !@provincias.nil?  %>
+    <%=select_tag "Provincias", options_from_collection_for_select(@provincias, "id", "nombre"), :onchange => 'comunas();', :prompt=> "Seleccione", :class => "form-control"%>
+  <%else%>
+    <select name="Provincia" id="Provincias" onchange="provincias();" class="form-control"><option value="">Seleccione Provincia</option>></select>
+  <%end%>
+</div>

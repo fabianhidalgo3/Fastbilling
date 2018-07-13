@@ -1,0 +1,52 @@
+<div id="equipos">
+	<div class="panel panel-default">
+  	<div class="panel-heading">
+				<b>Datos Smartphone</b> <span class="mdi mdi-cellphone">
+		</div>
+         
+  <% if @perfil.to_i == 6 || @perfil.to_i == 7 %>
+  <div class="panel-body">
+  	<div class="field col-md-12">
+		<label>Mac</label><br>
+  		<input type="text" class="form-control input-sm" name="mac" id="mac">
+  	</div>
+  		<div class="col-md-6">
+  		<label for="">Marcas</label>
+  			   <%=select_tag "Marca", options_from_collection_for_select(Marca.all, "id", "nombre"), :prompt=> "Seleccione Marca ",:class => "form-control", :onchange => 'modelos();'%>
+  		</div>
+  		<div class="col-md-6">
+        <%= render 'carga_modelos'%>  
+  		</div>
+  		</div>
+          </div>
+         </div>
+
+  		<%else%>
+       <div class="panel-body" disabled = "true">
+        <p>No corresponde Equipo</p>
+  		<%end%>
+      </div>
+         </div>
+
+	</div>
+
+<!-- # > Funciones JS -->
+<script type="text/javascript">
+	// Mascara Inputs 
+	$(document).ready(function(){
+		// $('#mac').mask('00:00:00:00:00');
+	});
+	// Render de los Modelos 
+  function modelos()
+    {
+      /*Carga las porciones disponibles de una zona */
+      var marca = document.getElementById("Marca").value;
+      $.ajax({
+        url:"<%=url_for :controller => 'empleados',:action => 'carga_modelos' %>",
+        data:'marca=' + encodeURIComponent(marca),
+        cache:false,
+        success:function (data) {
+        }
+    })
+  }
+</script>

@@ -1,0 +1,31 @@
+<div id="ubicacion" class="ubicacion">
+  <div id="multi_markers" style='width: 850px; height: 400px;'></div>
+</div>
+<script>
+	$( document ).ready(function() {
+		mapa();
+	});
+	function sleep(ms) {
+	  return new Promise(resolve => setTimeout(resolve, ms));
+	}
+	
+	function mapa(){
+		//while(<%=raw @hash.to_json %> != null){
+		sleep(5000);
+		//}
+		var handler = Gmaps.build('Google');
+		handler.buildMap({ internal: {id: 'multi_markers'}}, function(){	
+			var markers = handler.addMarkers(<%=raw @hash.to_json %>);
+			  var polylines = handler.addPolylines(
+			    [
+			      <%=raw @hash.to_json %>
+			    ],
+			    { strokeColor: '#14CC82'}
+			  );
+			handler.bounds.extendWith(polylines);
+			handler.bounds.extendWith(markers);
+	    handler.fitMapToBounds();
+	    handler.getMap().setZoom(18);
+		});
+	}
+</script>

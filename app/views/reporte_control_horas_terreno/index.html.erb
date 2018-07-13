@@ -1,0 +1,80 @@
+<title>Control de Entregas</title>
+<div class="panel panel-default" id="panel-titulos">
+	<div class="panel-body">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+			<li class="breadcrumb-item">Lectura </li>
+			<li class="breadcrumb-item">Reportes </li>
+	  	<li class="breadcrumb-item active">Control de Horas en Terreno</li>
+		</ol>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-4">
+					<label for="">Regiones: </label>
+					<%= select_tag "Zona", options_from_collection_for_select(@zonas, "id", "nombre"),
+						  :prompt=> "Seleccionar", :class => "form-control input-sm", 
+						  :onchange => 'mostrarPorciones();'%>
+				</div>
+				<div class="col-md-3">
+					<label for="">Porciones: </label>
+					<%= render 'carga_porciones' %>
+
+				</div>
+				<div class="col-md-3">
+					<label for="">Lectores: </label>
+					<%= render 'carga_empleados' %>
+				</div>
+				<div class="col-md-1">
+					<br>
+					<button type="button" onclick="cargaFiltro();" class="btn btn-default form-control"><span class="mdi mdi-magnify"></span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div>
+	<%= render 'carga_filtro'%>
+</div>
+
+<script>
+ 	//Se Definen las Funciones para los Fitros de los Selects
+ 	// > Muestra todas las porciones por Zona asignada
+	function mostrarPorciones() {
+    var zona = document.getElementById("Zona").value;
+    $.ajax({
+    	url: "<%=url_for :controller => 'reporte_control_horas_terreno',:action => 'carga_porciones' %>",
+      data: 'zona=' + encodeURIComponent(zona),
+      cache: false,
+      success: function(data) {}
+		})
+	}
+
+	// > Muestra todos Empleados por Zona
+	function carga_empleados() {
+		var porcion = document.getElementById("Porcion").value;
+		$.ajax({
+      url: "<%=url_for :controller => 'reporte_control_horas_terreno',:action => 'carga_empleados' %>",
+      data: 'porcion=' + encodeURIComponent(porcion),
+      cache: false,
+      success: function(data) {}
+    })
+	}
+
+	function cargaFiltro() {
+		var porcion = document.getElementById("Porcion").value;
+		var empleado = document.getElementById("Empleado").value;
+		$.ajax({
+      url: "<%=url_for :controller => 'reporte_control_horas_terreno',:action => 'carga_filtro' %>",
+      data: 'porcion=' + encodeURIComponent(porcion)+ "&" +
+						'empleado=' + encodeURIComponent(empleado),
+      cache: false,
+      success: function(data) {}
+    })
+	}
+</script>

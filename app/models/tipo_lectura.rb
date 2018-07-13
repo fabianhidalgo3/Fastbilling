@@ -1,0 +1,2 @@
+class TipoLectura < ApplicationRecord
+end

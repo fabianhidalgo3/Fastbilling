@@ -1,0 +1,31 @@
+<div class="field" id="subempresas">
+  <%= label_tag "Sub Empresa" %>
+  <% if !@subempresas.nil?%>
+    <% if @empleado.nil?%>
+      <%=select_tag "SubEmpresa", options_from_collection_for_select(@subempresas, "id", "razon_social"), :onchange => 'zonas();', :prompt=> "Seleccione", :class => "form-control input-sm" %>
+    <% else %>
+      <%=select_tag "SubEmpresa", options_from_collection_for_select(@subempresas, "id", "razon_social"), :onchange => 'zonas();', :selected => @empleado.subempresa,  :class => "form-control input-sm" %>
+    <% end %>
+  <% else %>
+    <select class="form-control input-sm">
+      <option>Seleccione</option>
+    </select> 
+  <%end%>
+</div>
+
+<script type="text/javascript">
+
+  function zonas()
+  {
+    /*Carga las porciones disponibles de una zona */
+    var subempresa = document.getElementById("SubEmpresa").value;
+    $.ajax({
+        url:"<%=url_for :controller => 'empleados',:action => 'carga_zonas' %>",
+        data:'subempresa=' + encodeURIComponent(subempresa),
+        cache:false,
+        success:function (data) {
+        }
+    })
+  }
+
+</script>

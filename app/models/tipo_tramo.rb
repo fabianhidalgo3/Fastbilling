@@ -1,0 +1,2 @@
+class TipoTramo < ApplicationRecord
+end

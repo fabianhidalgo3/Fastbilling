@@ -1,0 +1,23 @@
+<div id="carga_fotografia">
+	<% if !@lista_fotos.nil? %>
+		<% @lista_fotos.each do |foto| %>
+			<label for="">Fecha: <%=foto.created_at.strftime("%d/%m/%Y")%></label><br>
+			<label for="">Hora <%=foto.created_at.strftime("%H:%M:%S")%></label>
+			<center>
+				<span class='zoom' id='fotografia'>
+					<%= image_tag(foto.archivo.to_s, size: '350x600', id: 'fotografia', class: 'img-responsive') %><br>
+				</span>
+			</center>
+		<% end %>
+	<%end%>
+  <%if @lista_fotos.blank? %>
+  	<div class="col-md-12">
+			<h3 style="color:orange"><center>No se Capturaron Fotografias</center></h3>
+		</div>
+	<% end %>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#fotografia').zoom();
+  });
+</script>

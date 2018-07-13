@@ -1,0 +1,94 @@
+<div id="form-lectura-dictada">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="well well-lg">
+            <div class="row">
+              <div class="col-md-12">
+                <tr>
+                  <td><strong>Titular:</strong></td>
+                  <td> </td>
+                  <td><% if !@cliente.nil? %> <%= @cliente.nombre %> <% end %> </td>
+                  </tr><br>
+                  <tr>
+                    <td><strong>Domicilio:</strong></td>
+                    <td> </td>
+                    <td><% if !@cliente.nil? %> <%= @cliente.direccion %> <% end %></td>
+                  </tr><br>
+                  <tr>
+                    <td><strong>Teléfono contacto :</strong></td>
+                    <td> </td>
+                    <td>
+                      <% if !@cliente.nil? %>
+                        <% if !@cliente.telefono.blank? %>
+                          <%= @cliente.telefono %>
+                        <% else %>
+                          <b></b>
+                        <% end %>
+                      <% end %>
+                    </td>
+                  </tr>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% if !@ordenLectura.nil? %>
+            <div class="col-md-6">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                        <label>Ingrese lectura dictada</label>
+                      <input id="lectura-dictada" type="number" class="form-control">
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputFile">Agregar fotografia</label>
+                            <input type="file" id="exampleInputFile">
+                            <p class="help-block">Agregue fotografia enviada por cliente</p>
+                          </div>
+                      <button onclick="agregarLecturaDictada('<%= @ordenLectura.id %>');" class="btn btn-default form-control"><span class="mdi mdi-plus-circle mdi-8px"></span> Ingresar</button>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <% end %>
+
+        </div>
+      </div>
+    </div>
+    <div>
+      <%= render 'alertas' %>
+    </div>
+  
+  <!-- Realizar carga de imagenes-->
+  <script>
+      function agregarLecturaDictada(orden_id){
+        var lectura_dictada = document.getElementById("lectura-dictada").value;
+        if (lectura_dictada == ""){
+          Push.create("Error de Busqueda", {
+            body: "Ingrese: LECTURA DICTADA POR CLIENTE",
+            icon: "<%= asset_path('warning.png') %>",
+            timeout: 5000,
+            onClick: function () {
+              window.focus();
+              this.close();
+            }
+          })
+        }
+        else{
+          $.ajax({
+            url: "<%=url_for :controller => 'lectura_dictada_cliente',:action => 'agregar_lectura_dictada' %>",
+            data: 'lectura_dictada=' + encodeURIComponent(lectura_dictada) +
+                  '&orden_id=' + encodeURIComponent(orden_id),         
+            cache: false,
+            success: function(data) {}
+          })
+        } 
+      }
+    </script>
+</div>
+  

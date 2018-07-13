@@ -1,0 +1,63 @@
+<title>Reporte Claves de Lectura</title>
+<div class="panel panel-default" id="panel-titulos">
+		<div class="panel-body">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+				<li class="breadcrumb-item">Lectura </li>
+				<li class="breadcrumb-item">Reportes </li>
+	  		<li class="breadcrumb-item active">Tipos de Claves </li>
+			</ol>
+		</div>
+	</div>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-3">
+					<label for="">Región</label>
+					<%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "nombre"), :prompt=> "Seleccionar", :class => "form-control input-sm" , :onchange => 'carga_porciones();'%>
+				</div>
+				<div class="col-md-3">
+					<label for="">Porción</label>
+					<%= render 'carga_porciones' %>
+				</div>
+				<div class="col-md-2">
+					<br>
+					<button type="button" onclick="cargaFiltro();" class="btn btn-primary form-control"><span style="color:white" class="mdi mdi-magnify"></span> Buscar</button>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<div class="">
+	<%= render 'carga_filtro'%>
+</div>
+
+<script type="text/javascript">
+	function cargaFiltro(){
+		var zona    = document.getElementById("Zona").value;
+		var porcion = document.getElementById("Porcion").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_tipos_claves',:action => 'carga_filtro' %>",
+            data: 'zona=' + encodeURIComponent(zona)+ "&" +
+									'porcion=' + encodeURIComponent(porcion),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+
+	//Carga Porciones
+	function carga_porciones() {
+		var zona = document.getElementById("Zona").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_tipos_claves',:action => 'carga_porciones' %>",
+						data: 'zona=' + encodeURIComponent(zona),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+	
+
+	
+</script>

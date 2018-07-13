@@ -1,0 +1,2 @@
+module MedidorsHelper
+end

@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Porcion Repartos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Codigo</th>
+      <th>Nombre</th>
+      <th>Ano</th>
+      <th>Mes</th>
+      <th>Zona</th>
+      <th>Subempresa</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @porcion_repartos.each do |porcion_reparto| %>
+      <tr>
+        <td><%= porcion_reparto.codigo %></td>
+        <td><%= porcion_reparto.nombre %></td>
+        <td><%= porcion_reparto.ano %></td>
+        <td><%= porcion_reparto.mes %></td>
+        <td><%= porcion_reparto.zona %></td>
+        <td><%= porcion_reparto.subempresa %></td>
+        <td><%= link_to 'Show', porcion_reparto %></td>
+        <td><%= link_to 'Edit', edit_porcion_reparto_path(porcion_reparto) %></td>
+        <td><%= link_to 'Destroy', porcion_reparto, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Porcion Reparto', new_porcion_reparto_path %>

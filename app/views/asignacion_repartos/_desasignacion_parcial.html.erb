@@ -1,0 +1,10 @@
+<div id="desasignacion_parcial">
+	<% if !@completado_uno.nil?%>
+	<script>
+		alert("Desasignación Completada Exitosamente")
+		$('#modalDesasignacion').modal('hide'); 
+		cargar_filtros();
+	</script>
+		<%= @completado_uno %>
+	<%end%>
+</div>

@@ -1,0 +1,328 @@
+<div id="dashboard">
+  <div class="row">
+		<div class="col-md-6">
+			<div class="col-md-6">
+				<center>
+					<%= image_tag 'logo_provider.png', :size => "280x90" %>
+				</center>
+			</div>
+			<div class="col-md-6">
+				<center>
+					<%= image_tag 'logo_metrogas.png', :size => "120x90" %>
+				</center>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="panel panel-default">
+  			<div class="panel-body">
+					<tr>
+						<td><strong>Nombre:</strong></td>
+						<td> </td>
+						<td><%= current_usuario.empleado.nombre_completo %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Perfil:</strong></td>
+						<td> </td>
+						<td><%= current_usuario.perfil.nombre %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Contratista:</strong></td>
+						<td> </td>
+						<td><%= current_usuario.empleado.contratistum.nombre %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Empresa:</strong></td>
+						<td> </td>
+						<td><%= current_usuario.empleado.subempresa.razon_social %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Ultima conexión:</strong></td>
+						<td> </td>
+						<td><%= current_usuario.last_sign_in_at.strftime("%H:%M:%S %d/%m/%Y") %></td>
+					</tr><br>
+				</div>
+			</div>		
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-md-3">
+				<%= link_to '<i class="mdi mdi-map-marker"></i> M. de Lectores'.html_safe, lectura_operaciones_monitor_lectores_path, :class => "btn btn-default form-control" %>
+			</div>
+			<div class="col-md-3">
+				<%= link_to '<i class="mdi mdi-map-marker"></i> M. de Repartidores'.html_safe, reparto_operaciones_monitor_repartidores_path, :class => "btn btn-default form-control" %>
+			</div>
+			<div class="col-md-3">
+				<%= link_to '<i class="mdi mdi-chart-line"></i> C. Dudosos Máximos y Mínimos'.html_safe, lectura_analisis_online_clientes_dudosos_path, :class => "btn btn-default form-control" %>
+			</div>
+			<div class="col-md-3">
+				<%= link_to '<i class="mdi mdi-chart-line"></i> C. Dudosos Improcedentes'.html_safe, lectura_analisis_online_clientes_improcedentes_path, :class => "btn btn-default form-control" %>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<!-- # > Graficos -->
+	<div class="row animated fadeInRight" >
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<!-- # > Graficos de Lectura -->
+					<div class="row">
+						<div class="col-md-3">
+							<!-- Asignados Vs Cargados -->
+							<center><h3 >Ordenes de Lectura</h3></center>  
+							<center><span class="label label-success">Cargados</span> vs <span class="label label-primary">Asignado</span></center>
+							<div id="draw_lecturas" style="width: 250px; height: 250px;"></div>
+						</div>
+						<div class="col-md-3">
+							<center><h3 >Productividad</h3></center>
+							<center><span class="label label-success">Asignados</span> vs <span class="label label-primary">Leídos</span></center>
+							<div id="draw_productividad_lecturas" style="width: 250px; height: 250px;"></div>
+						</div>
+						<div class="col-md-3">
+							<center><h3>Efectividad</h3></center>
+							<center><span class="label label-success">Leídos</span> vs <span class="label label-primary">Efectivo</span></center>
+							<div id="draw_efectividad_lecturas" style="width: 250px; height: 250px;"></div>
+						</div>
+						<div class="col-md-3">
+							<center><h3>Consumos Dudosos</h3></center><br>
+							<div id="draw_clientes_dudosos" style="width: 250px; height: 250px;"></div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-3">
+							<!-- Asignados Vs Cargados -->
+							<center><h3 >Ordenes de Reparto</h3></center>  
+							<center><span class="label label-success">Cargado</span> vs <span class="label label-primary">Asignado</span></center>
+							<div id="draw_reparto" style="width: 250px; height: 250px;"></div>
+						</div>
+						
+						<div class="col-md-3">
+							<center><h3 >Productividad</h3></center>
+							<center><span class="label label-success">Asignado</span> vs <span class="label label-primary">Entregado</span></center>
+							<div id="draw_productividad_repartos" style="width: 250px; height: 250px;"></div>
+						</div>
+						<div class="col-md-2">
+
+						</div>
+
+						<div class="col-md-4">
+							<center><h3>Verificaciones Pendientes</h3></center>
+							<div class="panel panel-default" style="background-color:#4684ee !important">
+								<div class="panel-body">
+										<h3 align="center" style="font-size: 190px; color:white"><%= @olVerificacion %></h3>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- # > Libreria de Graficos -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<!-- # > Funciones Js-->
+<script type="text/javascript">
+	
+	google.charts.load('current', {'packages':['gauge']});
+	google.charts.setOnLoadCallback(drawLecturas);
+	google.charts.setOnLoadCallback(drawProductividadLecturas);
+	google.charts.setOnLoadCallback(drawEfectividadLecturas);
+	google.charts.setOnLoadCallback(drawClienteDudosos);
+	google.charts.setOnLoadCallback(drawRepartos);
+	google.charts.setOnLoadCallback(drawProductividadRepartos);
+
+	// # > Graficos Orden Lecturas
+	// # > Asignado Vs Cargado
+	function drawLecturas() {
+		var cargadas = <%= @olCargadas %>;
+		var data = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			["", 0	],
+		]);
+		// > Variables de O.L
+		var asignaciones = <%= @olAsignadas +  @olCargadas + @olLeidas%> ;
+		var sinAsignar = <%= @olSinAsignar%>;
+		var todas = <%= @olAsignadas +  @olCargadas + @olLeidas + @olSinAsignar%> ;
+
+		var asignadas = <%= @olAsignadas %>;
+		var leidas = <%= @olLeidas %>;
+		var posicionCursor = <%= @olLeidas + @olCargadas + @olAsignadas%>;
+		
+		var options = {
+			width: 250, height: 250,
+			greenFrom:0, greenTo: (asignaciones),
+			redFrom: asignaciones, redTo: todas ,
+			minorTicks:20,
+			max: todas,
+			majorTicks: [(asignaciones),(todas)]
+		};
+		
+		// # > Crea el Grafico
+		var chart = new google.visualization.Gauge(document.getElementById('draw_lecturas'));
+		chart.draw(data, options);
+		 setInterval(function() {
+		 	data.setValue(0, 1, leidos);
+			chart.draw(data, options);
+		}, 1000);
+	}
+
+	// # > Leido Vs Asignado
+	function drawProductividadLecturas() {
+
+		var data = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			['', 0	],
+		]);
+
+		var asignadas = <%= @olAsignadas %> + <%= @olCargadas %>;
+		var leidos = <%= @olLeidas%>;
+
+
+		var options = {
+			width: 250, 
+			height: 250,
+			greenFrom:0, 
+			greenTo:  leidos,
+			redFrom: leidos, 
+			redTo: leidos + asignadas,
+			minorTicks: 6,
+			max: leidos + asignadas,
+			majorTicks: [leidos, leidos + asignadas]
+
+		};
+		var chart = new google.visualization.Gauge(document.getElementById('draw_productividad_lecturas'));
+		chart.draw(data, options);
+		setInterval(function() {
+			data.setValue(0, 1, leidos);
+			chart.draw(data, options);
+		}, 1000);
+	}
+
+
+	//Grafico Efectividad Lecturas
+	function drawEfectividadLecturas() {
+
+		var data = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			['', 0	],
+		]);
+
+		var leidos = <%= @olLeidas%>;
+		var efectivas = <%= @olEfectivas%>;
+
+		var options = {
+			width: 250, 
+			height: 250,
+			greenFrom:0, 
+			greenTo:  efectivas,
+		 	redFrom: efectivas, 
+		 	redTo: leidos,
+			minorTicks: 6,
+			max: leidos,
+			majorTicks: ["0", leidos]
+
+		};
+		var chart = new google.visualization.Gauge(document.getElementById('draw_efectividad_lecturas'));
+		chart.draw(data, options);
+		setInterval(function() {
+			data.setValue(0, 1, efectivas);
+			chart.draw(data, options);
+		}, 1000);
+	}
+	function drawClienteDudosos() {
+
+		var data = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			['', 0	],
+		]);
+
+		var dudosos = <%= @olDudosas%>;
+
+		var options = {
+			width: 250, 
+			height: 250,
+			yellowFrom:0, 
+			yellowTo:  dudosos,
+		 	//	redFrom: efectivas, 
+		 	//redTo: leidos,
+			minorTicks: 6,
+			max: dudosos,
+			majorTicks: ["0", dudosos]
+
+		};
+		var chart = new google.visualization.Gauge(document.getElementById('draw_clientes_dudosos'));
+		chart.draw(data, options);
+		setInterval(function() {
+			data.setValue(0, 1, dudosos);
+			chart.draw(data, options);
+		}, 1000);
+	}
+
+	//Asignano vs Cargados
+	function drawRepartos() {
+		var data = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			['', 0	],
+		]);
+
+	  var cargadas = <%= @orLeidas %>;
+		var asignadas = <%= @orAsignadas %>;
+		var options = {
+			width: 250, 
+			height: 250,
+			greenFrom:0, 
+			greenTo:  cargadas,
+		 	redFrom: cargadas, 
+		  redTo: asignadas + cargadas,
+			minorTicks: 6,
+			max: asignadas + cargadas,
+			majorTicks: ["0", asignadas+cargadas]
+
+		};
+		var chart = new google.visualization.Gauge(document.getElementById('draw_reparto'));
+		chart.draw(data, options);
+		setInterval(function() {
+			data.setValue(0, 1, cargadas);
+			chart.draw(data, options);
+		}, 1000);
+	}
+
+	//Asignano vs Cargados
+	function drawProductividadRepartos() {
+		var data = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			['', 0	],
+		]);
+
+	  var leidas = <%= @orLeidas %>;
+		var asignadas = <%= @orAsignadas %> +<%= @orCargadas %>;
+		var options = {
+			width: 250, 
+			height: 250,
+			greenFrom:0, 
+			greenTo:  leidas,
+		 	redFrom: leidas, 
+		  redTo: asignadas,
+			minorTicks: 6,
+			max: asignadas,
+			majorTicks: ["0", asignadas]
+
+		};
+		var chart = new google.visualization.Gauge(document.getElementById('draw_productividad_repartos'));
+		chart.draw(data, options);
+		setInterval(function() {
+			data.setValue(0, 1, leidas);
+			chart.draw(data, options);
+		}, 1000);
+	}
+
+	
+
+
+</script>

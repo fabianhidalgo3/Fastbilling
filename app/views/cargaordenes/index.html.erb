@@ -1,0 +1,65 @@
+<title>Importar O.L</title>
+<%= form_tag({controller: "cargaordenes", action: "import_xml"} ,multipart:true) do %>
+<div class="row">
+  <div class="panel panel-default" id="panel-titulos">
+		<div class="panel-body">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+				<li class="breadcrumb-item">Lectura </li>
+				<li class="breadcrumb-item">Operaciones</li>
+				<li class="breadcrumb-item active">Importar Ordenes de Lectura</li>
+			</ol>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-body">
+  		<div class="col-md-3">
+				<div class="col-md-6">
+      		<label>Mes Proceso</label><br>
+      		<%= select_month(Date.today, use_month_names: %w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre),  field_name: 'mes') %>	
+				</div>
+   			<div class="col-md-6">
+					
+      		<label>Año Proceso</label><br>
+      		<%= select_year(Date.today, start_year: 1992, end_year: 2099, field_name: 'año', :class => 'form-control') %> <br>
+				</div>
+				
+				<div class="col-md-12">
+					<br>
+					<label>Regiones: </label><br>
+					<%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "codigo_nombre"),
+					:prompt=> "Seleccione", :class =>"form-control input-sm"%> <br>
+				</div>
+				
+			</div>
+			<br>
+  		<div class="col-md-6">
+    		<p>Formato Soportado: <b>XML</b></p>
+   		 <span class="input-group-btn">
+      	<span class="btn btn-success" onclick="$(this).parent().find('input[type=file]').click();">
+				<span class="mdi mdi-file-xml"  aria-hidden="true"></span>
+					Seleccione Archivo
+			</span>
+      		<%= file_field_tag "file", onchange: "$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\\\|/]/).pop());", style: "display: none;" %>
+    		</span>
+				<br>
+			
+    		<span class="form-control"></span>
+    			<div class="row">
+     				<div class="col-md-12">
+        			<br>
+        			<%= button_tag(:class => "btn btn-primary pull-right") do %>
+								<span class="mdi mdi-database" aria-hidden="true"></span>
+								Importar a DB
+							<% end %>
+						</div>
+						</div>
+					</div>
+					</div>
+				</div>
+				<% end %>
+				
+		</div>
+		
+	</div>
+</div>

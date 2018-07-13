@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Subempresa:</strong>
+  <%= @factor_cobro.subempresa %>
+</p>
+
+<p>
+  <strong>Sector:</strong>
+  <%= @factor_cobro.sector %>
+</p>
+
+<p>
+  <strong>Tipo sector:</strong>
+  <%= @factor_cobro.tipo_sector %>
+</p>
+
+<p>
+  <strong>Tipo tarifa:</strong>
+  <%= @factor_cobro.tipo_tarifa %>
+</p>
+
+<p>
+  <strong>Cargo fijo:</strong>
+  <%= @factor_cobro.cargo_fijo %>
+</p>
+
+<p>
+  <strong>Cargo unico:</strong>
+  <%= @factor_cobro.cargo_unico %>
+</p>
+
+<p>
+  <strong>Cargo energia base:</strong>
+  <%= @factor_cobro.cargo_energia_base %>
+</p>
+
+<p>
+  <strong>Cargo energia adicional:</strong>
+  <%= @factor_cobro.cargo_energia_adicional %>
+</p>
+
+<p>
+  <strong>Precio energia inyectada:</strong>
+  <%= @factor_cobro.precio_energia_inyectada %>
+</p>
+
+<%= link_to 'Edit', edit_factor_cobro_path(@factor_cobro) %> |
+<%= link_to 'Back', factor_cobros_path %>

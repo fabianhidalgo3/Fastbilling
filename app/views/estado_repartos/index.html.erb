@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Estado Repartos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Estado</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @estado_repartos.each do |estado_reparto| %>
+      <tr>
+        <td><%= estado_reparto.estado %></td>
+        <td><%= link_to 'Show', estado_reparto %></td>
+        <td><%= link_to 'Edit', edit_estado_reparto_path(estado_reparto) %></td>
+        <td><%= link_to 'Destroy', estado_reparto, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Estado Reparto', new_estado_reparto_path %>

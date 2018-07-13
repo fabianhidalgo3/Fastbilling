@@ -1,0 +1,229 @@
+<div id="dudosos_min">
+	<div class="panel panel-default">
+		<div class="panel-heading"><b>Resultados de la Busqueda</b> <span class="mdi mdi-table-large"></span></div>
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table class="table table-striped table-hover table-condensed table-bordered animated fadeIn fast">
+					<thead class="cabecera">
+						<tr>
+							<th  style="width:60%" ><span class="mdi mdi-settings"></span></th>
+							<th style="width:20%">Cliente</th>
+              <th>Numero Cliente</th>
+              <th>Medidor</th>
+							<th style="width:10%">Ruta</th>
+							<th style="width:15%">Lector</th>
+							<th>Promedio</th>
+							<th>Lect. Anterior</th>
+							<th>Lect. Actual</th>
+							<th>Consumo</th>
+							<th>Lect. Esperada</th>
+							<th>Clave Lectura</th>
+              <th>Clave Lectura Anterior</th>
+              <th>Lectura Dictada</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if !@lista.nil? %>
+							<% @lista.each do |l| %>
+								<tr>
+									<td align="center">
+										<% if !l[12] %>
+											<button onclick="mostrarModalFotografia('<%= l[11] %>');" type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Ver Fotografias">
+												<span class="mdi mdi-camera"></span>
+											</button>
+										<% else %>
+											<button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Sin Fotografias">
+												<span class="mdi mdi-camera-off"></span>
+											</button>
+										<% end %> 
+										<button onclick="mostrarModalReleer('<%= l[11] %>');" style="border:none" type="button" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Verificación en Terreno">
+											<span class="mdi mdi-keyboard-return"></span>
+										</button>
+
+										<button onclick="mostrarMlectura('<%= l[11] %>');" style="background-color:#14B75F; border:none" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Modificar Lectura Actual">
+											<span class="mdi mdi-tooltip-edit" ></span>
+										</button>
+
+										<!-- <button onclick="autoriza_facturacion('<%= l[11] %>');" type="button" class="btn btn-info btn-sm" style="border:none" data-toggle="tooltip" data-placement="top" title="Facturar">
+											<span class="mdi mdi-printer mdi-12" style="color:white"></span>
+										</button> -->
+									</td>
+									<td><%= l[0]%></td>
+                  <td><b><%= l[1]%></b></td>
+                  <td><b><%=l[14]%></b></td>
+									<td><%= l[2]%></td>
+									<td><b><%= l[3]%></b></td>
+									<td><span class="label label-default"><%= l[4]%></span></td>
+									<td><span class="label label-danger"> <%= l[5]%></span></td>
+									<td><span class="label label-info"> <%= l[6]%></span></td>
+									<td><span class="label label-primary"> <%= l[7]%></span></td>
+									<td><span class="label label-success"><%= l[8]%></span></td>
+									<td><b><%= l[9]%></b></td>
+                  <td><b><%= l[13] %></b></td>
+                  <td><%= l[15]%></td>
+								</tr>
+							<%end%>
+						<%end%>
+					</tbody>
+				</table>
+			</div>
+			<div class="row">
+				<center>
+					<% if !@lista.nil? %>
+						<%= will_paginate @lista, renderer: BootstrapPagination::Rails %>
+					<% end %>
+				</center>
+			</div>
+		</div>
+	</div>
+</div>
+<div>
+  <%= render 'relectura' %>
+</div>
+
+<div>
+  <%= render 'autoriza_facturacion' %>
+</div>
+<!-- Modal Fotografia -->
+<div id="modalUno">
+    <div id="modalFotografia" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content" >
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <br>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+                  <li class="breadcrumb-item">Lectura </li>
+                  <li class="breadcrumb-item">Análisis Online </li>
+                  <li class="breadcrumb-item"><%=link_to 'Clientes Improcedentes', lectura_analisis_online_clientes_improcedentes_path%></li>
+                  <li class="breadcrumb-item active">Fotografias</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body">
+                <%= render 'carga_fotografia' %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+</div>
+<div id="modalDos">
+    <div id="modalReleer" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content" >
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <br>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+                  <li class="breadcrumb-item">Lectura </li>
+                  <li class="breadcrumb-item">Análisis Online </li>
+                  <li class="breadcrumb-item"><%=link_to 'Clientes Improcedentes', lectura_analisis_online_clientes_improcedentes_path%></li>
+                  <li class="breadcrumb-item active">Verificación de Lectura</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="modal-body">
+                <%= render 'releer' %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+</div>
+<div id="modalTres">
+    <div id="modalMlectura" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content" >
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <br>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+                  <li class="breadcrumb-item">Lectura </li>
+                  <li class="breadcrumb-item">Análisis Online </li>
+                  <li class="breadcrumb-item"><%=link_to 'Clientes Improcedentes', lectura_analisis_online_clientes_improcedentes_path%></li>
+                  <li class="breadcrumb-item active">Modificar Lectura Actual</li>
+                </ol>
+              </div>
+            </div>          </div>
+          <div class="modal-body">
+            <%= render 'modificar_lectura'%>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+</div> 
+
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+  
+  function mostrarMlectura(orden_id){
+    $.ajax({
+      url:"<%=url_for :controller => 'analisis',:action => 'modificar_lectura' %>",
+      data:'id_orden=' + encodeURIComponent(orden_id),
+      cache:false,
+      success:function (data) {}
+    })
+    $('#modalMlectura').modal();
+  }
+
+  function mostrarModalFotografia(orden_id){
+    $.ajax({
+      url:"<%=url_for :controller => 'analisis',:action => 'carga_fotografia' %>",
+      data:'id_orden=' + encodeURIComponent(orden_id),
+      cache:false,
+      success:function (data) {}
+    })
+    $('#modalFotografia').modal();
+  }
+
+  function mostrarModalReleer(orden){
+    var analisis = 1;
+    $.ajax({
+      url:"<%=url_for :controller => 'analisis',:action => 'releer' %>",
+      data:'orden=' + encodeURIComponent(orden)+ "&" + 'analisis=' + encodeURIComponent(analisis),
+      cache:false,
+      success:function (data) {}
+    })
+    $('#modalReleer').modal();
+  }
+
+  function autoriza_facturacion(orden_id){
+		$.ajax({
+	        url:"<%=url_for :controller => 'analisis',:action => 'autoriza_facturacion' %>",
+	        data:'orden_id=' + encodeURIComponent(orden_id) + "&analisis=2",
+	        cache:false,
+	        success:function (data) {}
+	  })
+	}
+
+</script>

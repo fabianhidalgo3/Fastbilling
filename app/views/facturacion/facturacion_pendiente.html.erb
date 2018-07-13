@@ -1,0 +1,60 @@
+<h3>Facturaciones Pendiente</h3>
+<hr>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis.</p>
+<div class="col-md-4">
+    <h5><b>Tabla Contenido</b></h5>
+    <hr>
+</div>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Dirección</th>
+            <th>Instalación</th>
+            <th>Medidor</th>
+            <th>Ruta</th>
+            <th>Porción</th>
+            <th>Operaciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @orden.each  do |orden| %>
+            <tr>
+                <td>
+                    <%= orden.cliente.nombre %>
+                        <%= orden.cliente.apellido_materno %>
+                            <%= orden.cliente.apellido_paterno %>
+                </td>
+                <td>
+                    <%= orden.direccion %>
+                </td>
+                <td>
+                    <%= orden.instalacion.codigo %>
+                </td>
+                <td>
+                    <%= orden.medidor.numero_medidor%>
+                </td>
+                <td>
+                    <%=	orden.rutum.codigo%>
+                </td>
+                <td>
+                    <%= orden.rutum.porcion.codigo%>
+                </td>
+                <td>
+                    <%= button_to("Facturas", :controller => :facturacion, :action => :facturacion_pendiente, :target => "_blank", 
+					:html => { :class => "btn.btn-large.btn-primary" })%>
+                </td>
+            </tr>
+            <%end%>
+    </tbody>
+</table>
+<div class="col-md-4"></div>
+<div class="col-md-4">
+    <div class="digg_pagination">
+        <%= page_entries_info @orden %><br>
+            <center>
+                <%= will_paginate @orden, :container => false %>
+            </center>
+    </div>
+</div>
+<div class="col-md-4"></div>

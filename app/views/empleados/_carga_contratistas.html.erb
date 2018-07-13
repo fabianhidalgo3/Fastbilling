@@ -1,0 +1,26 @@
+<div class="field" id="contratistas">
+  <%= label_tag "Contratista" %>
+  <% if !@contratistas.nil? && @empleado.contratistum.nil?%>
+    <%=select_tag "Contratista", options_from_collection_for_select(@contratistas, "id", "nombre"), :onchange => 'subempresas();', :prompt=> "Seleccione Contratista",:class => "form-control input-sm" %>
+  <% end %>
+  <% if !@empleado.contratistum.nil?%>
+    <%=select_tag "Contratista", options_from_collection_for_select(@contratistas, "id", "nombre"), :onchange => 'subempresas();', :selected => @empleado.contratistum,:class => "form-control input-sm" %>  
+  <%end%>
+</div>
+
+<script type="text/javascript">
+
+  function subempresas()
+  {
+    /*Carga las porciones disponibles de una zona */
+    var contratista = document.getElementById("Contratista").value;
+    $.ajax({
+        url:"<%=url_for :controller => 'empleados',:action => 'carga_subempresas' %>",
+        data:'contratista=' + encodeURIComponent(contratista),
+        cache:false,
+        success:function (data) {
+        }
+    })
+  }
+
+</script>

@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Codigo:</strong>
+  <%= @ruta_reparto.codigo %>
+</p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @ruta_reparto.nombre %>
+</p>
+
+<p>
+  <strong>Porcion reparto:</strong>
+  <%= @ruta_reparto.porcion_reparto %>
+</p>
+
+<%= link_to 'Edit', edit_ruta_reparto_path(@ruta_reparto) %> |
+<%= link_to 'Back', ruta_repartos_path %>

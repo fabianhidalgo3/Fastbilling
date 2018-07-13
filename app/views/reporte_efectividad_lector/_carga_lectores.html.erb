@@ -1,0 +1,7 @@
+<div id="carga_lectores">
+	<% if !@lectores.nil?  %>
+	  <%= select_tag "Lector", options_from_collection_for_select(@lectores, "id", "nombre_completo"), :prompt=> "Seleccionar Todos" , :class => "form-control input-sm"%>
+	<%else%>
+	  <select name="Lector" id="Lectores" class="form-control input-sm" ><option value="">Seleccionar Todos</option>></select>
+	<%end%>
+</div>	

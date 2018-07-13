@@ -1,0 +1,118 @@
+<title>Control de Coordenadas GPS</title>
+<div class="panel panel-default" id="panel-titulos">
+		<div class="panel-body">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+				<li class="breadcrumb-item">Lectura </li>
+				<li class="breadcrumb-item">Reportes </li>
+	  		<li class="breadcrumb-item active">Control de Coordenadas  <small ><span class="badge badge-defaul">GPS</span></small></li>
+			</ol>
+		</div>
+	</div>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+
+		<div class="col-md-12">
+			<div class="col-md-2">
+				<label for="">Región</label>
+				<%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "nombre"), :prompt=> "Seleccionar", :class => "form-control input-sm" , :onchange => 'carga_porciones(); carga_empleados();'%>
+			</div>
+			<div class="col-md-3">
+				<label for="">Porción</label>
+				<%= render 'carga_porciones' %>
+			</div>
+			<div class="col-md-3">
+				<label for="">Lector:</label>
+				<%= render 'carga_empleados'	%>
+			</div>
+			<div class="col-md-2">
+				<label for="">Sin Georeferencia</label><br>
+				<input id="georeferencia" name="georeferencia" onclick="georeferencia();" type="checkbox" />
+			</div>
+			<div class="col-md-2">
+				<br>
+				<button class="form-control btn btn-primary"  onclick="carga_filtro_rsiete();"><span class="mdi mdi-magnify
+		" style="color:white" ></span> Buscar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<%= render 'carga_filtro' %>
+
+
+<script type="text/javascript">
+
+	function georeferencia(){
+    var georeferencia 
+		if(document.getElementById('georeferencia').checked) {
+    		empleado = document.getElementById("Empleado").disabled = true;
+    	}
+    	else{
+    		empleado = document.getElementById("Empleado").disabled = false;
+    	}
+
+    }
+    
+    
+
+
+	function carga_filtro_rsiete(){
+		var georeferencia 
+		if(document.getElementById('georeferencia').checked) {
+    		georeferencia = 1
+		} else {
+    		georeferencia = 0
+		}
+		var zona = document.getElementById("Zona").value;
+		var porcion = document.getElementById("Porcion").value;
+		var empleado = document.getElementById("Empleado").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_control_coordenadas',:action => 'carga_filtro' %>",
+						data: 'zona=' + encodeURIComponent(zona)+ "&" + 
+									'porcion=' + encodeURIComponent(porcion)+ "&" + 
+									'empleado=' + encodeURIComponent(empleado)+ "&" + 
+									'georeferencia=' + encodeURIComponent(georeferencia),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+
+	function carga_empleados() {
+		var zona = document.getElementById("Zona").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_control_coordenadas',:action => 'carga_empleados' %>",
+            data: 'zona=' + encodeURIComponent(zona),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+
+
+	function carga_porciones() {
+		var zona = document.getElementById("Zona").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_control_coordenadas',:action => 'carga_porciones' %>",
+            data: 'zona=' + encodeURIComponent(zona),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+
+
+	function carga_rutas() {
+		var porcion = document.getElementById("Porcion").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_control_coordenadas',:action => 'carga_rutas' %>",
+            data: 'porcion=' + encodeURIComponent(porcion),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+
+	$(function(){
+    	$('.pagination a').attr('data-remote', 'true')
+	});
+
+</script>

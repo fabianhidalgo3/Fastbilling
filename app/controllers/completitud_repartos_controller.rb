@@ -1,0 +1,2 @@
+class CompletitudRepartosController < ApplicationController
+end

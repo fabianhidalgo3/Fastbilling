@@ -1,0 +1,81 @@
+<title>Asignaciones de Repartos</title>
+<div class="panel panel-default" id="panel-titulos">
+  <div class="panel-body">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+      	<%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%>	
+      </li>
+      <li class="breadcrumb-item">Reparto </li>
+      <li class="breadcrumb-item">Operaciones</li>
+      <li class="breadcrumb-item active">Asignaciones de Repartos	</li>
+    </ol>
+  </div>
+</div>
+<br>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+    <div class="col-md-12">
+      <div class="col-md-2">
+        <label>Región:</label>
+        <%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "codigo_nombre"), 
+        		:onchange => 'mostrarPorciones();', :prompt=> "Seleccione", :class => "form-control input-sm"%>
+      </div>
+      <div class="col-md-3" >
+        <label>Porción:</label>
+        <%= render 'porciones' %>
+      </div>
+      <div class="col-md-2">
+        <label>Proceso:</label>
+        <%=select_tag "Tipo_Reparto", options_from_collection_for_select(@tipo_reparto, "id", "descripcion"), 
+        		:prompt=> "Seleccione", :class => "form-control input-sm"%>
+      </div>
+      <div class="col-md-2">
+        <label>Estado:</label>
+        <%=select_tag "Estado", options_from_collection_for_select(@estados, "id", "estado"), 
+        		:prompt=> "Seleccione", :class => "form-control input-sm"%>
+      </div>
+      <div class="col-md-2">
+        <br>
+        <button type="button" class="form-control btn btn-primary btn-sm" onclick="mostrarTablaContenido();">
+          <span class="mdi mdi-magnify" style="color:white"></span> Buscar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div>
+  <%= render 'tabla_contenido' %>
+</div>
+
+
+<script type="text/javascript">
+	
+  function mostrarTablaContenido() { 
+    var porcion = document.getElementById("Porcion").value;
+    var proceso = document.getElementById("Tipo_Reparto").value;
+    var zona = document.getElementById("Zona").value;
+    var estado = document.getElementById("Estado").value;
+    $.ajax({
+      url: "<%=url_for :controller => 'asignacion_repartos',:action => 'tabla_contenido', :format => :js %>",
+			data: 'porcion=' + encodeURIComponent(porcion) + 
+						'&proceso=' + encodeURIComponent(proceso) + 
+						'&zona=' + encodeURIComponent(zona)+ 
+						'&estado=' + encodeURIComponent(estado),
+      cache: false,
+      success: function(data) {}
+     })
+	}
+	
+  function mostrarPorciones() {
+    var zona = document.getElementById("Zona").value;
+    $.ajax({
+    	url: "<%=url_for :controller => 'asignacion_repartos',:action => 'porciones' %>",
+      data: 'zona=' + encodeURIComponent(zona),
+      cache: false,
+      success: function(data) {}
+		})
+	}
+</script>

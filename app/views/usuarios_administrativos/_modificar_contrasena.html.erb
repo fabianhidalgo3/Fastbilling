@@ -1,0 +1,91 @@
+<div id="modificar_contrasena">
+  <div class="row">
+    <% if !@usuario.nil? %>
+      <% if !@usuario.empleado.nil?%>
+        <%= form_tag :controller => 'usuarios_administrativos', :action => 'cambiar', :method => 'post' do |us| %>
+          <div class="col-md-4">
+            <br>
+            <tr>
+              <td><b>Usuario:</b></td>
+              <td> </td>
+              <td><%= @usuario.email %></td>
+            </tr><br>
+            <tr>
+              <td><b>Perfil:</b></td>
+              <td> </td>
+              <td><%= @usuario.perfil.nombre %></td>
+            </tr><br>
+            <tr>
+              <td><b>Nombre:</b></td>
+              <td> </td>
+              <td><%= @usuario.empleado.nombre_completo %></td>
+            </tr><br>
+          </div>
+          <div class="col-md-3">
+            <br>
+            <tr>
+              <td><b>Rut:</b></td>
+              <td> </td>
+              <td><%= @usuario.empleado.rut %></td>
+            </tr><br>
+            <tr>
+              <td><b>Empresa:</b></td>
+              <td> </td>
+              <td><%= @usuario.empleado.subempresa.razon_social %></td>
+            </tr><br>
+            <tr>
+              <td><b>Contratista:</b></td>
+              <td> </td>
+              <td><%= @usuario.empleado.contratistum.nombre %></td>
+            </tr><br>
+          </div>
+          <div class="col-md-5 form-inline">
+            <label>Nueva Contraseña: </label><br>
+            <%= hidden_field_tag :id, @usuario.id %>
+            <%= password_field_tag  :password, "",  :class => 'form-control', size: 20, :required => true %>
+            <button onclick="actualizarContrasena();"  data-toggle="tooltip" data-placement="top" title="Guardar" type="button" class="btn btn-default"><span class="mdi mdi-content-save mdi-18px"></span></button>
+            <button onclick="cancelar();"  data-toggle="tooltip" data-placement="top" title="Cancelar" type="button" class="btn btn-primary"><span class="mdi mdi-close-box mdi-18px"></span></button><br>
+            <input type="checkbox" onchange="document.getElementById('password').type = this.checked ? 'text' : 'password'"> Mostrar Contraseña
+          </div>
+        <%end%>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  
+  // > ToolTip Mensajes
+  $(document).ready(function(){ 
+  	$('[data-toggle="tooltip"]').tooltip();
+  });
+
+  // > Envia Datos para Actualizar contrasela
+  function actualizarContrasena(){
+    var contrasena = document.getElementById("password").value;
+    if (contrasena == "" ){
+      Push.create("Fastbilling dice: ", {
+				body: "Debe ingresar una contraseña",
+				icon: "<%= asset_path('error.png') %>",
+				timeout: 4000,
+				onClick: function () {
+					window.focus();
+					this.close();
+				}
+			})
+      return false;
+    }
+    else
+    {
+      var x = document.getElementsByTagName("form");
+      x[0].submit();
+    }
+  }
+
+  // > Salir del Modal
+  function cancelar(){
+    $('#modal_modificar_contrasena').modal('hide');
+  }
+
+</script>

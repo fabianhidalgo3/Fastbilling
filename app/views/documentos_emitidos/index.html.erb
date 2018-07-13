@@ -1,0 +1,106 @@
+<h3>Documentos Emitidos</h3>
+<hr>
+<div class="panel panel-default">
+  <div class="panel-heading"><b>Buscador de Documentos</b></div>
+  <div class="panel-body">
+  	<div class="col-md-12">
+  		<div class="col-md-6">
+  			<div class="row">
+  				<form class="form-inline">
+  					<label style="font-size: 14px;">Fechas</label>
+  					<hr>
+  					<div class="form-group">
+    					<label>Desde:</label>
+    					<input type="text" class="form-control input-sm" id="desde">
+  					</div>
+  					<div class="form-group">
+    					<label>Hasta:</label>
+    					<input type="text" class="form-control input-sm" id="hasta">
+  					</div>
+					</form>
+					<br>
+					<form class="form-inline">
+  					<label style="font-size: 14px;">Folios</label>
+  					<hr>
+  					<div class="form-group">
+    					<label>Desde:</label>
+    					<input type="number" class="form-control input-sm" id="folio_desde">
+  					</div>
+  					<div class="form-group">
+    					<label>Hasta:</label>
+    					<input type="number" class="form-control input-sm" id="folio_hasta">
+  					</div>
+					</form>
+  			</div>
+  		</div>
+  		<div class="col-md-6">
+  			<form class="form-horizontal">
+  				<div class="form-group">
+    				<label class="col-sm-2 control-label">Empresa</label>
+    				<div class="col-md-10">
+    					<%=select_tag "Empresa", options_from_collection_for_select(@empresas, "id", "razon_social"), :prompt=> "Seleccionar Empresa", :class => "form-control input-sm"%>
+    				</div>
+  				</div>
+  				<div class="form-group">
+    				<label class="col-sm-2 control-label">Tipo Documento</label>
+    				<div class="col-md-10">
+    					<%=select_tag "Tipo_documentos", options_from_collection_for_select(@tipo_documentos, "id", "nombre"), :prompt=> "Seleccionar Tipo Doc.", :class => "form-control input-sm"%>
+    				</div>
+  				</div>
+  				<div class="form-group">
+    				<label class="col-sm-2 control-label">Estado Documento</label>
+    				<div class="col-md-10">
+    					<%=select_tag "Estado_documento", options_from_collection_for_select(@estado_facturacions, "id", "nombre"), :prompt=> "Seleccionar Estado Doc.", :class => "form-control input-sm"%>
+    				</div>
+  				</div>
+  				<div class="form-group">
+    				<label class="col-sm-2 control-label">Cliente</label>
+    				<div class="col-md-10">
+    					<input type="text" class="form-control input-sm" id="cliente">
+    				</div>
+  				</div>
+  				<div class="form-group">
+   					<div class="col-sm-offset-2 col-sm-10">
+      				<button type="submit" class="btn btn-primary"><span class="mdi mdi-magnify" style="color:white">Buscar</span></button>
+    				</div>
+ 			 		</div>
+				</form>
+  		</div>
+  	</div> 
+  </div>
+</div>
+<%= render 'carga_filtro' %>
+
+
+<script>
+	 //Calendarios
+  $(function() {
+      $('#desde').datepicker({
+        dateFormat: 'yy/mm/dd',
+        changeMonth: true,
+        changeYear: true,
+        firstDay: 1,
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        monthNames: ['Enero', 'Febrero', 'Marzo',
+                     'Abril', 'Mayo', 'Junio',
+                     'Julio', 'Agosto', 'Septiembre',
+                     'Octubre', 'Noviembre', 'Diciembre'
+                    ],
+        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
+      });
+			
+			$('#hasta').datepicker({
+        dateFormat: 'yy/mm/dd',
+        changeMonth: true,
+        changeYear: true,
+        firstDay: 1,
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        monthNames: ['Enero', 'Febrero', 'Marzo',
+                     'Abril', 'Mayo', 'Junio',
+                     'Julio', 'Agosto', 'Septiembre',
+                     'Octubre', 'Noviembre', 'Diciembre'
+                		],
+        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
+      });
+    });
+</script>

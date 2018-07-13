@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Codigo:</strong>
+  <%= @porcion_reparto.codigo %>
+</p>
+
+<p>
+  <strong>Nombre:</strong>
+  <%= @porcion_reparto.nombre %>
+</p>
+
+<p>
+  <strong>Ano:</strong>
+  <%= @porcion_reparto.ano %>
+</p>
+
+<p>
+  <strong>Mes:</strong>
+  <%= @porcion_reparto.mes %>
+</p>
+
+<p>
+  <strong>Zona:</strong>
+  <%= @porcion_reparto.zona %>
+</p>
+
+<p>
+  <strong>Subempresa:</strong>
+  <%= @porcion_reparto.subempresa %>
+</p>
+
+<%= link_to 'Edit', edit_porcion_reparto_path(@porcion_reparto) %> |
+<%= link_to 'Back', porcion_repartos_path %>

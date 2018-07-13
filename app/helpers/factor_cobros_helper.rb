@@ -1,0 +1,2 @@
+module FactorCobrosHelper
+end

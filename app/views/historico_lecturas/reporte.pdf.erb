@@ -1,0 +1,86 @@
+<h4>Historico de Lecturas de un cliente</h4>
+<hr>
+<table  class="table table-hover table-condensed table-striped table-bordered" >
+						<th>Hora</th>
+						<th>Lectura</th>
+						<th>Clave Lectura</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% if !@lecturas.nil?%>
+						<% @lecturas.each do |l| %>
+							<tr>
+								<td>
+					<thead>
+					<tr>
+						<!-- <th style="width: 10%;"><span class="mdi mdi-settings" style="color:black"></span></th> -->
+						<th>Nº Cliente</th>
+						<th style="width:20%">Lector</th>
+						<th>Nombre Cliente</th>
+						<th>Nº de Medidor</th>
+						<th>Instalación</th>
+						<th>Dirección</th>
+						<th>Comuna</th>
+						<th>Proceso</th>
+						<th>Fecha</th>
+								<% if !l.cliente.nil? %>
+										<b><%= l.cliente.numero_cliente %></b>
+									<% end %>
+								</td>
+								<td>
+									<% if !l.asignacion.empleado.nil? %>
+										<%= l.asignacion.empleado.nombre_completo %>
+									<%end%>
+								</td>
+								<td>
+									<% if !l.cliente.nil? %>
+										<%= l.cliente.nombre %>
+									<%end%>
+								</td>
+								<td>
+									<% if !l.medidor.nil? %>
+										<b><%= l.medidor.numero_medidor %></b>
+									<%end%>
+								</td>
+								<td>
+									<% if !l.instalacion.nil? %>
+										<b><%= l.instalacion.codigo %></b>
+									<%end%>
+								</td>
+								<td><%= l.direccion %></td>
+
+								<td>
+									<% if !l.comuna.nil? %>	
+										<b><%= l.comuna.nombre %></b>
+									<%end%>
+								</td>
+								<td>
+									<% if !l.tipo_lectura.nil? %>
+										<%= l.tipo_lectura.nombre %>
+									<%end%>
+								</td>
+								<td>
+									<% if !l.detalle_orden_lectura.nil? %>
+										<%= l.detalle_orden_lectura.first.fecha_ejecucion.strftime(' %e/%m/%Y') %>
+									<% end %>
+								</td>
+								<td>
+									<% if !l.detalle_orden_lectura.nil? %>
+										<%= l.detalle_orden_lectura.first.fecha_ejecucion.strftime('%I:%M:%S') %>
+									<% end %>
+								</td>
+								<td>
+									<% if !l.detalle_orden_lectura.nil? %>
+										<%= l.detalle_orden_lectura.first.lectura_actual %></td>
+									<% end %>
+								<td>
+									<% if !l.detalle_orden_lectura.first.clave_lectura.nil? %>
+									
+										<%= l.detalle_orden_lectura.first.clave_lectura.codigo %>
+									<% end %>
+								</td>
+							</tr>
+						<% end %>
+					<% end %>
+				</tbody>
+			</table>

@@ -1,0 +1,16 @@
+<div id="asignacion_completa_mensaje">
+	<% if !@completado.nil?%>
+	<script>
+		Push.create("", {
+			body: "Asignación Completada Exitosamente",
+			icon: "<%= asset_path('correcto.png') %>",
+			timeout: 4000,
+			onClick: function () {
+					window.focus();
+					this.close();
+			}
+		})
+		cargar_filtros();
+	</script>
+	<%end%>
+</div>

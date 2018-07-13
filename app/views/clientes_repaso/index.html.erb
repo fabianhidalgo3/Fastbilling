@@ -1,0 +1,97 @@
+<title>Clientes Pendientes de Verificación</title>
+<div class="panel panel-default" id="panel-titulos">
+		<div class="panel-body">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+				<li class="breadcrumb-item">Lectura </li>
+				<li class="breadcrumb-item">Análisis Online </li>
+	  		<li class="breadcrumb-item active">Clientes Pendientes de Verificación</li>
+			</ol>
+		</div>
+	</div>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-2">
+				<div class="btn-group">
+					<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="mdi mdi-cloud-download"></span> Exportar <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+							<li><a onclick="exportarPdf();" target="_blank" target="_blank"><span class="mdi mdi-file-pdf mdi-18px"></span> PDF </a></li>
+							<li><a onclick="exportarExcel();"><span class="mdi mdi-file-excel mdi-18px"></span> CSV </a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="table-responsive">
+				<table class="table table-condensed table-hover table-striped table-bordered">
+					<thead>		
+						<tr>
+							<th>Fecha Asignación</th>
+							<th>Lector</th>
+							<th>Tipo Lectura</th>
+							<th>Ruta</th>
+							<th>Comuna</th>
+							<th>Nº Cliente</th>							
+							<th>Cliente</th>
+							<th>Direccion</th>
+							<th>Nº Instalación</th>
+							<th>Nº Medidor</th>
+							<th>Observación Verificación</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if !@ordenes.nil?%>
+							<% @ordenes.each do |o| %>
+							<% if o.orden_lectura.tipo_lectura.id == 2 %>
+								<tr class="danger">
+							<%else%>
+								<tr>
+							<%end%>
+								<%if !o.orden_lectura.fecha_asignacion.blank? %>							
+									<td><b><%= o.orden_lectura.fecha_asignacion.strftime("%d/%m/%Y  %H:%M:%S") %></b></td>	
+								<% else %>
+									<td></td>
+								<%end%>
+								<td><%=o.empleado.nombre_completo%></td>			
+								<td><b><%= o.orden_lectura.tipo_lectura.nombre %> </b></td>
+								<td><%= o.orden_lectura.rutum.codigo_nombre %></td>
+								<td><%= o.orden_lectura.comuna.nombre%></td>
+								<td><b><%= o.orden_lectura.cliente.numero_cliente%></b></td>									
+								<td><%= o.orden_lectura.cliente.nombre %></td>
+								<td><%= o.orden_lectura.direccion %></td>
+								<td><b><%= o.orden_lectura.instalacion.codigo %></b></td>
+								<td><b><%= o.orden_lectura.medidor.numero_medidor %></b></td>
+								<td>
+									<% if o.orden_lectura.consumos? %>
+										<span class="label label-success">O.L Dudosa</span>
+									<% end %>
+									<% if o.orden_lectura.inverosimil? %> 
+										<span class="label label-danger">O.L Improcedente</span>
+									<% end %>
+								</td>
+							</tr>
+							<% end %>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+			<!-- Paginación -->
+			<div class="row">
+				<center>
+					<%= will_paginate @ordenes, renderer: BootstrapPagination::Rails %>
+				</center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	//tooltip mensajes en los botones
+	$(document).ready(function(){
+  	$('[data-toggle="tooltip"]').tooltip();
+  });
+
+</script>

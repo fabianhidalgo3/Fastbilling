@@ -1,0 +1,87 @@
+<div id="carga_filtro">
+	<div class="panel panel-default">
+		<div class="panel-heading"><b>Listado de Porciones <span class="mdi mdi-table-large"></span></b></div>
+		<div class="panel-body">
+			<div class="table-responsive">
+				<table class="table table-striped table-hover table-condensed table-bordered animated fadeIn fast" style="width:100%">
+					<thead>
+						<tr>
+							<th><span class="mdi mdi-settings"></span></th>
+							<th>Porción</th> 
+							<th style="width:10%">Unidades de Lecturas</th> 
+							<th>Total O.L </th>
+							<th>O.L Pendientes</th>
+							<th>Sin Asignar</th>
+							<th>Asignado</th>
+							<th>Cargado</th>
+							<th>Leidos</th>
+							<th>Estado Porción</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if !@lista.nil? %>
+							<% @lista.each do |l| %>
+								<tr>
+									<td>
+										<% if l[2] == l[7] %>
+											<button class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Cerrar Proceso">
+												<i class="mdi mdi-close-circle mdi-8px"></i>
+											</button>
+										<% else %> 
+											<button class="btn btn-primary btn-sm" disabled data-toggle="tooltip" data-placement="top" title="Cerrar Proceso">
+												<i class="mdi mdi-close-circle mdi-8px"></i>
+											</button>
+										<% end %>
+									</td>
+									<td><b><%= l[0]%></b></td>
+									<td><span class="label label-default"><b><%= l[1]%></b></span></td>
+									<td><span class="label label-info"><b><%= l[2]%></b></span></td>
+									<td><span class="label label-danger"><b><%= l[3]%></b></span></td>
+									
+									<% if !l[4].blank? %>									
+										<td><span class="label label-default"><b><%= l[4]%></b></span></td>
+									<%else%>	
+										<td><span class="label label-default"><b>0</b></span></td>
+									<%end%>
+									
+									<% if !l[5].blank? %>									
+										<td><span class="label label-default"><b><%= l[5]%></b></span></td>
+									<%else%>	
+										<td><span class="label label-default"><b>0</b></span></td>
+									<%end%>
+									
+									<% if !l[6].blank? %>									
+										<td><span class="label label-default"><b><%= l[6]%></b></span></td>
+									<%else%>	
+										<td><span class="label label-default"><b>0</b></span></td>
+									<%end%>
+									
+									<%if !l[7].blank? %>									
+										<td><span class="label label-default"><b><%= l[7]%></b></span></td>
+									<%else%>	
+										<td><span class="label label-default"><b>0</b></span></td>
+									<%end%>
+
+									<% if l[8] %>
+										<td><span class="label label-success"><b>Abierto</b></span></td>
+									<% else %>
+										<td><span class="label label-default"><b>Cerrado</b></span></td>
+									<% end %>
+								</tr>
+							<% end %>	
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+		</div> 
+	</div>
+</div>
+<script type="text/javascript">
+
+    //tooltip mensajes en los botones
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
+</script>
+
+

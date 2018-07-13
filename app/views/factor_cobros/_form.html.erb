@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-md-4">
+        <h5><b>Crear Nueva Tarifa</b></h5>
+        <hr>
+    </div>
+</div>
+<%= form_for(factor_cobro) do |f| %>
+    <div class="row">
+        <div class="col-md-12">
+                <div class="col-md-2">
+                <label>Nombre:</label><br>
+                    <%= f.text_field :nombre, :required => true, class: "form-control input-sm", :placeholder=> "Nombre de la tarifa"%>
+                            <br>
+                </div>
+                <div class="col-md-2">
+                    <label>Subempresa: </label><br>
+                        <%= f.collection_select :subempresa_id, Subempresa.all, :id, :razon_social, 
+                         {:prompt => "Seleccione"}, {:class=>'form-control'} %>
+                            <br>
+                </div>
+                <div class="col-md-2">
+                    <label>Cargo Fijo:</label><br>
+                    <%= f.number_field :cargo_fijo, :required => true, class: "form-control input-sm", :placeholder=> "Cargo fijo", :value => "0"%><br>
+                </div>
+                <div class="col-md-2">
+                    <%= f.label "Cargo Unico:" %><br>
+                            <%= f.number_field :cargo_unico, :required => true,  class: "form-control input-sm", :placeholder=> "Cargo unico", :value => "0"%>
+                </div>
+                <div class="col-md-2">
+                    <br>
+                    <button type="submit" class="btn btn-primary" aria-label="Left Align">
+                        <span class="mdi mdi-content-save" aria-hidden="true" style="color:white"></span> Guardar
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <%= link_to factor_cobros_path, class: "btn btn-danger" do %>
+                        <i class="mdi mdi-backspace" style="color:white"></i> Volver
+                    <% end %>
+                </div>
+            </div>
+        </div> 
+<% end %>

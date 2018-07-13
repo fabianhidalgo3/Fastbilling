@@ -1,0 +1,2 @@
+module TipoCobrosHelper
+end

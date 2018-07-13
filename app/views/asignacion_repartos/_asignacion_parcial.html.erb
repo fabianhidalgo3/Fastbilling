@@ -1,0 +1,41 @@
+<div id="asignacion_parcial">
+	<% if @completado == 0 %>
+		<script type="text/javascript">
+			Push.create("", {
+				body: "Asignación Completada Exitosamente",
+				icon: "<%= asset_path('correcto.png') %>",
+				timeout: 4000,
+				onClick: function () {
+						window.focus();
+						this.close();
+				}
+			})
+			$('#modalAsignacion'); 		
+			refrescarTablaAsignacion('<%=@ruta_seleccionada_id%>', '<%=@tipo_reparto_id%>','<%= @lector_id%>');		
+			Push.create("", {
+				body: "Se asignaron: <%=@ordenes%> O.R",
+				icon: "<%= asset_path('correcto.png') %>",
+				timeout: 4000,
+				onClick: function () {
+						window.focus();
+						this.close();
+				}
+			})
+		</script>
+	<%end%>
+	<% if @completado == 1%>
+		<script>
+			Push.create("", {
+				body: "Asignación Completada Exitosamente",
+				icon: "<%= asset_path('correcto.png') %>",
+				timeout: 4000,
+				onClick: function () {
+						window.focus();
+						this.close();
+				}
+			})
+			$('#modalAsignacion').modal('hide'); 				
+			var tiempo = setTimeout(mostrarTablaContenido, 3000);
+		</script>
+	<%end%>
+</div>

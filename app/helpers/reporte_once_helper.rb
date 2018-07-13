@@ -1,0 +1,2 @@
+module ReporteOnceHelper
+end

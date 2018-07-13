@@ -1,0 +1,28 @@
+<div id="alertas">
+	<% if !@completado.nil?  %>
+		<script>
+
+			Push.create("", {
+				body: "<%= @completado[0].to_s%>",
+				icon: "<%= asset_path('correcto.png') %>",
+				timeout: 5000,
+				onClick: function () {
+					window.focus();
+					this.close();
+				}
+			})
+
+			Push.create("", {
+				body: "<%= @completado[1]%>",
+				icon: "<%= asset_path('correcto.png') %>",
+				timeout: 5000,
+				onClick: function () {
+					window.focus();
+					this.close();
+				}
+			})
+
+			mostrarTablaContenido();
+		</script>
+	<% end %>
+</div>

@@ -1,0 +1,2 @@
+module TipoSectorsHelper
+end

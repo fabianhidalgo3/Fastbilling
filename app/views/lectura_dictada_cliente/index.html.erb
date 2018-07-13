@@ -1,0 +1,89 @@
+<title>Lectura dictada por Cliente</title>
+<div class="panel panel-default">
+	<div class="panel-body">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+			<li class="breadcrumb-item">Lectura </li>
+			<li class="breadcrumb-item">Análisis Online </li>
+	  	<li class="breadcrumb-item active">Lectura Dictada por Cliente</li>
+		</ol>
+	</div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+    <div class="col-md-12">
+      <div class="col-md-4">
+        <b>Ingrese un servicio: <span onclick="mostrarModalNumeroCliente();" class="mdi mdi-help-box"></span>: </b><br>
+        <input id="nro-cliente" type="number" class="form-control" required>
+      </div>
+      <div class="col-md-1">
+        <br>
+        <button onclick="mostrarTablaContenido();" class="form-control btn btn-default"><span class="mdi mdi-magnify"></span> </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="form">
+  <%= render 'form_lectura_dictada' %>
+</div>
+
+<div id="table-content">
+  <%= render 'tabla_contenido' %>
+</div>
+
+<div id="modal1">
+  <div id="modalNumeroCliente" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+   
+        <div class="modal-body">
+          <div class="row">
+            <center>
+              <h2>Falta Modelo de Boleta</h2>
+            </center>
+          </div>
+        <div class="modal-footer">
+          <button  type="button" class="btn btn-primary" data-dismiss="modal"><span class="mdi mdi-close-circle-outline"></span> Salir</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+	function mostrarTablaContenido() {
+    var cliente = document.getElementById("nro-cliente").value;
+    if (cliente == ""){
+      Push.create("Error de Busqueda", {
+				body: "Ingrese: Nº CLIENTE",
+				icon: "<%= asset_path('warning.png') %>",
+				timeout: 5000,
+				onClick: function () {
+					window.focus();
+					this.close();
+				}
+			})
+    }
+    else{  
+      $.ajax({
+        url: "<%=url_for :controller => 'lectura_dictada_cliente',:action => 'tabla_contenido' %>",
+        data: 'cliente=' + encodeURIComponent(cliente),
+        cache: false,
+        success: function(data) {}
+      })
+
+         $.ajax({
+        url: "<%=url_for :controller => 'lectura_dictada_cliente',:action => 'form_lectura_dictada' %>",
+        data: 'cliente=' + encodeURIComponent(cliente),
+        cache: false,
+        success: function(data) {}
+      })
+    }  
+  }
+
+  function mostrarModalNumeroCliente(){
+    $("#modalNumeroCliente").modal();
+  }
+ 
+</script>

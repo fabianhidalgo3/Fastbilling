@@ -1,0 +1,75 @@
+<div id="carga_filtro">
+	<div class="panel panel-default">
+		<div class="panel-heading"><b>Resultados de la Busqueda</b> <span class="mdi mdi-table-large"></span></div>
+		<div class="panel-body">
+				<div class="row">
+						<div class="col-md-2">
+							<div class="btn-group">
+								<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								 <span class="mdi mdi-cloud-download"></span>	Exportar <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+										<li><a onclick="exportarPdf();" target="_blank" target="_blank"><span class="mdi mdi-file-pdf mdi-18px"></span> PDF </a></li>
+									<li><a onclick="exportarExcel();"><span class="mdi mdi-file-excel mdi-18px"></span> CSV </a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<br>		
+			<div class="table-responsive">
+				<table class="table table-striped table-hover table-condensed table-bordered" style="width:100%">
+					<thead>
+						<tr>
+							<th>Porcion</th>
+							<th>Ruta</th>
+							<th style="width:15%">Cliente</th>
+							<th>Numero Doc.</th>
+							<th>Tipo Doc.</th>
+							<th style="width:15%">Repartidor</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if !@ordenesReparto.nil? %>
+							<% @ordenesReparto.each do |o| %>
+								<tr>
+									<td>
+										<% if !o.asignacion_reparto.nil? %>
+											<b><%= o.asignacion_reparto.porcion_reparto.codigo_nombre%></b>
+										<% end %>	
+									</td>
+									<td>
+										<% if !o.asignacion_reparto.nil? %>
+											<b><%= o.asignacion_reparto.ruta_reparto.codigo_nombre%></b>
+										<% end %>
+									</td>
+									<td>
+										<% if !o.cliente.nil? %>
+											<%= o.cliente.nombre%>
+										<% end %>
+									</td>
+									<td><b><%= o.numero_boleta%></b></td>
+									<td><b><%= o.tipo_documento.nombre%></b></td>
+									<td>
+										<% if !o.asignacion_reparto.nil? %>
+											<%= o.asignacion_reparto.empleado.nombre_completo%>
+										<% end %>
+									</td>							
+								</tr>
+							<% end %>	
+						<% end %>
+						
+					</tbody>
+				</table>
+			</div>
+		</div> 
+	</div>
+</div>
+<script type="text/javascript">
+
+    //tooltip mensajes en los botones
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
+</script>
+
+

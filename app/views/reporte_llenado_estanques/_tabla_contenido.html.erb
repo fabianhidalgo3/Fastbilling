@@ -1,0 +1,45 @@
+<div id="tabla-contenido">
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>Resultados de la Busqueda</b> <span class="mdi mdi-table-large"></span></div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-2">
+            <div class="btn-group">
+              <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="mdi mdi-cloud-download"></span> Exportar <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a onclick="exportarPdf();" target="_blank" target="_blank"><span class="mdi mdi-file-pdf mdi-18px"></span> PDF </a></li>
+                <li><a onclick="exportarExcel();"><span class="mdi mdi-file-excel mdi-18px"></span> CSV </a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="table-responsive">
+          <table class="table table-condensed table-hover table-striped table-bordered animated fadeIn fast">
+            <thead>
+              <tr>
+                <th>Nº Cliente</th>
+                <th>Ruta</th>
+                <th>Dirección</th>
+                <th>Comuna</th>
+                <th>% Llenado</th>
+                <th>Fecha </th>
+                <th>Hora</th>
+              </tr>
+            </thead>
+            <tbody>
+         
+            <tbody>
+          </table>
+        </div>      
+      </div>
+    </div>
+  </div>
+  
+  <script type="text/javascript"> 
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+  </script>

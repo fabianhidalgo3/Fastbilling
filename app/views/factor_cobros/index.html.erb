@@ -1,0 +1,91 @@
+<h3>Tarifas</h3>
+<hr>
+<div class="row">
+  <div class="col-md-12">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Operaciones
+      <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li><a href<%=link_to 'Agregar Tarifas', new_factor_cobro_path %></a></li>
+        <li><a href<%=link_to 'Vincular Tarifas', new_comunas_factor_cobro_path %></a></li>
+     </ul>
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-condensed">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Comunas Vinculadas</th>
+        <th>Total Comunas</th>
+        <th>Subempresa</th>
+        <th>Cargo fijo</th>
+        <th>Cargo unico</th>
+        <th><center><span class="mdi mdi-settings" style="color:black"></span></center></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @factor_cobros.each do |factor_cobro| %>
+        <tr>
+          <td align="center"><b><%=factor_cobro.nombre%></b></td>
+           <td>
+              <% contador =0%>
+                <%factor_cobro.comuna.each do |comuna|%>
+                  <b><%=comuna.nombre%></b><br>    
+                <% contador = contador+1%>
+              <% end %>
+            </td>
+            <td style="font-size: 14px"><%= contador %></td>
+            <td align="center"><%= factor_cobro.subempresa.razon_social %></td>
+            <td align="center"><b><%= factor_cobro.cargo_fijo %></b></td>
+            <td align="center"><b><%= factor_cobro.cargo_unico %></b></td>
+            <td align="center">
+            <%= link_to edit_factor_cobro_path(factor_cobro), class: "btn btn-danger btn-sm",  title: '', data: { toggle: 'tooltip', placement: 'top', original_title: 'Modificar Tarifa' } do %>
+              <i class="mdi mdi-pencil" style="color:white"></i>
+            <% end %>
+            <button onclick="carga_tramos('<%=factor_cobro.id%>');" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Ver Tramos" style="background-color: #1981A7; border:none"><span class="mdi mdi-file-document-box"></span></button>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Tramos</h4>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <%= render 'carga_tramos' %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    //tooltip mensajes en los botones
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+    //Levanta Modal y Carga Tramos de la Tarifa
+    function carga_tramos(factor){
+        $.ajax({
+            url:"<%=url_for :controller => 'factor_cobros',:action => 'carga_tramos' %>",
+            data:'factor=' + encodeURIComponent(factor),
+            cache:false,
+            success:function (data) {}
+        })
+         $('#myModal').modal();
+    }
+
+</script>

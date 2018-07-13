@@ -1,0 +1,2 @@
+class Estanque < ApplicationRecord
+end

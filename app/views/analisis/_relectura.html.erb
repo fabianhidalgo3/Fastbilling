@@ -1,0 +1,14 @@
+<div id="relectura">
+	<% if !@completado.nil? %>
+		<!--Carga Filtro Dudosos Maximos-->
+		<% if (@completado.first[0] == 1) then %>
+			<div>
+				<script>
+					$('#modalReleer').modal('hide'); 
+					alert("Relectura Completada Exitosamente");
+					mostrar_dudosos_max();
+				</script>
+			</div>
+		<% end %>
+	<%end%>
+</div>

@@ -1,0 +1,186 @@
+<nav class="navbar navbar-default navbar-fixed-top ">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand " href="#">
+        <%= link_to (image_tag 'isotipo_fastbilling.png',:width => 50, :height => 40, :class => 'animated jackInTheBox'), {controller: "bienvenida", action: "index"} %>
+      </a>
+      <%= link_to (image_tag 'logo_metrogas.png',:width => 50, :height => 40, :class => 'animated jackInTheBox'), {controller: "bienvenida", action: "index"} %>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-left">
+        <!-- Catastros -->
+        <li class="dropdown active" >
+          <a id="titulo-nav" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+             <span class="mdi mdi-format-list-bulleted-type mdi-18px"></span> Catastros 
+					</a>
+          <ul class="dropdown-menu">
+            <li><%=link_to 'Perfiles de Usuario', catastro_perfiles_path %></li>
+            <li><%=link_to 'Usuarios Administrativos', catastro_empleados_administrativos_path %></li>
+            <li><%=link_to 'Usuarios Agentes de Terreno',  catastro_empleados_agentes_terreno_path %></li>
+            <li class="divider"></li>
+						<li><%=link_to 'Claves de Lectura', catastro_clave_lecturas_path%></li>
+						<li><%=link_to 'Observaciones de Reparto', catastro_observacion_repartos_path%></li>
+          </ul>
+        </li>
+        <!-- Lecturas -->
+        <li class="dropdown">
+          <a id="titulo-nav" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="mdi mdi-animation mdi-18px"></span> Lecturas 
+          </a>
+          <div class="dropdown-menu multi-column">
+            <div class="container-fluid">
+              <div class="row-fluid">
+                <div class="col-md-4">
+                  <ul class="dropdown-menu">
+                    <li><label id="txt-submenu"><span class="mdi mdi-worker"></span> Operaciones</label></li>
+                    <div id="salto"></div>
+										<li><%=link_to 'Importar Ordenes de lectura', lectura_operaciones_importar_ordenes_lectura_path%></li>
+										<li class="divider"></li>
+                    <li><%=link_to 'Asignación de Libreta de O.L', lectura_operaciones_asignacion_lecturas_path %></li>
+										<li><%=link_to 'Impresión de Libreta de O.L', lectura_operaciones_impresion_ruteros_path%></li>
+										<li class="divider"></li>
+										<li><%=link_to 'Monitoreo de Lectores en Terreno', lectura_operaciones_monitor_lectores_path%></li>
+										<li class="divider"></li>
+										<li class="danger"><%=link_to 'Cerrar Procesos', lectura_operaciones_cerrar_procesos_lecturas_path%></li>
+										<li class="divider"></li>
+                  </ul>
+                </div>
+                <div class="col-md-4">
+                  <ul class="dropdown-menu">
+                    <li><label id="txt-submenu"><span class="mdi mdi-chart-bar-stacked"></span> Análisis Online</label></li>
+                    <div id="salto"></div>
+                    <li><%=link_to 'Lectura Dictada Por Cliente',lectura_analisis_online_lectura_dictada_cliente_path%></li>
+                    <li class="divider"></li>
+                    <li><%=link_to 'Clientes Dudosos Máximos Y Mínimos', lectura_analisis_online_clientes_dudosos_path%></li>
+										<li><%=link_to 'Clientes Dudosos Improcedentes', lectura_analisis_online_clientes_improcedentes_path%></li>
+										<li class="divider"></li>
+                    <li><%=link_to 'Histórico de Lecturas de un Cliente', lectura_analisis_online_historico_lecturas_path%></li>
+										<li><%=link_to 'Clientes Pendientes de Verificación',lectura_analisis_online_clientes_pendientes_verificacion_path%></li>
+										<li class="divider"></li>
+                  </ul>
+                </div>
+                <div class="col-md-4">
+                  <ul class="dropdown-menu">
+                    <li><label id="txt-submenu"><span class="mdi mdi-file"></span> Reportes</label></li>
+                    <div id="salto"></div>
+                    <li><%=link_to 'Efectividad de Procesos',lectura_reportes_efectividad_procesos_path%></li>
+                    <li><%=link_to 'Efectividad por Porción',lectura_reportes_efectividad_porcion_path%></li>
+										<li><%=link_to 'Efectividad por Lector',lectura_reportes_efectividad_lector_path%></li>
+										<li class="divider"></li>
+										<li><%=link_to 'Control de Folios Casa Cerrada',lectura_reportes_casa_cerrada_path%></li>
+										<li><%=link_to 'Control de Coordenadas GPS',lectura_reportes_control_coordenadas_gps_path%></li>
+										<li><%=link_to 'Control de Horas por Lector',lectura_reportes_control_horas_lector_terreno_path%></li>
+
+										<li class="divider"></li>
+										<li><%=link_to 'Números de Intentos de Ingreso de Lectura',lectura_reportes_numero_intentos_lector_path%></li>
+										<li><%=link_to 'Tipo de Claves de Lectura',lectura_reportes_tipos_claves_path%></li>
+                    <li class="divider"></li>
+                    <li><%=link_to 'Llenado de Estanques',lectura_reportes_llenado_estanques_path%></li>
+                    <li class="divider"></li>
+                    <!-- <li><%=link_to 'Clientes con N Veces sin Lectura Efectiva',reporte_nveces_sinlecturaefectiva_index_path%></li> -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <!-- Repartos -->
+        <li class="dropdown">
+          <a id="titulo-nav" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="mdi mdi-truck-fast mdi-18px"></span> Reparto 
+          </a>
+          <div class="dropdown-menu multi-column">
+            <div class="container-fluid">
+              <div class="row-fluid">
+                <div class="col-md-4">
+                  <ul class="dropdown-menu">
+                    <li><label id="txt-submenu"><span class="mdi mdi-worker"></span> Operaciones</label></li>
+                    <div id="salto"></div>
+										<li><%=link_to 'Importar Ordenes de Reparto', reparto_operaciones_importar_ordenes_reparto_path%></li>
+										<li class="divider"></li>
+										<li><%=link_to 'Asignación de Libreta O.R', reparto_operaciones_asignacion_repartos_path%></li>
+										<li class="divider"></li>
+										<li><%=link_to 'Monitoreo de Agentes en Terreno', reparto_operaciones_monitor_repartidores_path%></li>
+										<li class="divider"></li>
+                    <li><%=link_to 'Cerrar Procesos', reparto_operaciones_cerrar_procesos_repartos_path%></li>
+                  </ul>
+                </div>
+                <div class="col-md-4">
+                  <ul class="dropdown-menu">
+                    <li><label id="txt-submenu"><span class="mdi mdi-truck-fast"></span> Gestión de Repartos</label></li>
+                    <div id="salto"></div>
+                    <li><%=link_to 'Historico de Documentos de un Cliente', reparto_gestion_repartos_historico_documentos_path%></li>
+										<li><%=link_to 'Devolución de Documentos', reparto_gestion_repartos_devoluciones_path%></li>
+										<li class="divider"></li>
+                  </ul>
+                </div>
+                <div class="col-md-4">
+                  <ul class="dropdown-menu">
+										<li><label id="txt-submenu"><span class="mdi mdi-file"></span> Reportes</label></li>
+										<div id="salto"></div>
+										<li><%=link_to 'Efectividad de Procesos', reparto_reportes_efectividad_procesos_path%></li>
+										<li class="divider"></li>
+										<li><%=link_to 'Devoluciones', reparto_reportes_devoluciones_path%></li>
+										<li class="divider"></li>
+										<li><%=link_to 'Control Entregas', reparto_reportes_control_entregas_path%></li>
+										<li class="divider"></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Facturación -->
+         <li class="dropdown active" >
+          <a id="titulo-nav" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="mdi mdi-currency-usd mdi-18px"></span> Facturación
+          </a>
+        </li>
+
+        <!-- Mantenedores -->
+         <li class="dropdown active" >
+          <a id="titulo-nav" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="mdi mdi-format-list-checks mdi-18px"></span> Mantenedores 
+          </a>
+          <ul class="dropdown-menu">
+            <li><%=link_to 'Empleados', empleados_path %></li>
+          </ul>
+        </li>
+
+        <!-- Ayuda -->
+        <li class="dropdown active" id="nombre_empleado" >
+          <a id="titulo-nav" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					 <span class="mdi mdi-help-circle-outline mdi-18px"></span> Ayuda
+				  </a>
+          <ul class="dropdown-menu">
+            <li><%=link_to 'Manual aplicación WEB', descargar_manual_web_bienvenida_index_path %></li>
+            <li><%=link_to 'Manual aplicación Android', descargar_manual_app_bienvenida_index_path %></li>
+          </ul>
+        </li>
+
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <!-- MI CUENTA -->
+        <li class="dropdown active" id="nombre_empleado" >
+          <a id="titulo-nav" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<%= current_usuario.email%> <span class="mdi mdi-account-circle  mdi-18px"></span>
+				  </a>
+          <ul class="dropdown-menu">
+            <li><%=link_to 'Cerrar Sesión', destroy_usuario_session_path, method: :delete %></li>
+          </ul>
+        </li>
+       
+      </ul>
+    </div>
+  </div>
+</nav>

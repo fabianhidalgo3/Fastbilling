@@ -1,0 +1,2 @@
+class EstanquesController < ApplicationController
+end

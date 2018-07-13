@@ -1,0 +1,326 @@
+<div id="releer">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-md-6">
+				<legend>Orden Lectura</legend>
+						<% if !@orden.nil? %>
+							<tr>
+								<td><strong>Código:</strong></td>
+								<td> </td>
+								<td><%= @orden.codigo %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Posición:</strong></td>
+								<td> </td>
+								<td><%= @orden.posicion %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Dirección:</strong></td>
+								<td> </td>
+								<td><%= @orden.direccion %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Dirección Entrega:</strong></td>
+								<td> </td>
+								<td><%= @orden.direccion_entrega %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Nº Poste:</strong></td>
+								<td> </td>
+								<td><%= @orden.numero_poste %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Fecha Carga:</strong></td>
+								<td> </td>
+								<td><%= @orden.fecha_carga.strftime("%d/%m/%Y %H:%M:%S %p ")  %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Fecha Propuesta:</strong></td>
+								<td> </td>
+								<td><%= @orden.fecha_propuesta.strftime("%d/%m/%Y %H:%M:%S %p ") %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Fecha Asignación:</strong></td>
+								<td> </td>
+								<td><%= @orden.fecha_asignacion.strftime("%d/%m/%Y %H:%M:%S %p ") %></td>
+							</tr><br>
+							<tr>
+								<td><strong>GPS Latitud:</strong></td>
+								<td> </td>
+								<td><%= @orden.gps_latitud%></td>
+							</tr><br>
+							<tr>
+								<td><strong>GPS Longitud:</strong></td>
+								<td> </td>
+								<td><%= @orden.gps_longitud %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Ajuste Sencillo Anterior:</strong></td>
+								<td> </td>
+								<td><%= @orden.ajuste_sencillo_anterior%></td>
+							</tr><br>
+							<tr>
+								<td><strong>Ajuste Sencillo Actual:</strong></td>
+								<td> </td>
+								<td><%= @orden.ajuste_sencillo_actual %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Instalación:</strong></td>
+								<td> </td>
+								<td>
+									<% if !@orden.instalacion.nil? %>
+										<%= @orden.instalacion.codigo %>
+									<% end %>
+								</td>
+							</tr><br>
+							<tr>
+								<td><strong>Medidor:</strong></td>
+								<td> </td>
+								<td>
+									<% if !@orden.medidor.nil? %>
+										<%= @orden.medidor.numero_medidor %>
+									<% end %>
+								</td>
+							</tr><br>
+							<tr>
+								<td><strong>Cliente:</strong></td>
+								<td> </td>
+								<td>
+									<% if !@orden.cliente.nil? %>
+										<%= @orden.cliente.nombre%>
+									<% end %>
+								</td>
+							</tr><br>
+							<tr>
+								<td><strong>Ruta:</strong></td>
+								<td> </td>
+								<td>
+									<% if !@orden.rutum.nil? %>
+										<%= @orden.rutum.codigo%>
+									<% end %>
+								</td>
+							</tr><br>
+							<tr>
+								<td><strong>Tipo Lectura:</strong></td>
+								<td> </td>
+								<td>
+									<% if !@orden.tipo_lectura.nil? %>
+										<%= @orden.tipo_lectura.nombre %>
+									<% end %>
+								</td>
+							</tr><br>
+							<tr>
+								<td><strong>Estado Lectura:</strong></td>
+								<td> </td>
+								<td>
+									<% if !@orden.estado_lectura.nil? %>
+										<%= @orden.estado_lectura.nombre %>
+									<% end %>
+								</td>
+							</tr><br>
+							<tr>
+								<td><strong>Tipo Tarifa:</strong></td>
+								<td> </td>
+								<td>
+									<% if !@orden.tipo_tarifa.nil? %>
+										<%= @orden.tipo_tarifa.nombre %>
+									<% end %>
+								</td>
+							</tr><br>
+              <tr>
+								<td><strong>Tipo Entrega:</strong></td>
+								<td> </td>
+								<td>
+									<% if !@orden.tipo_entrega.nil? %>
+										<%= @orden.tipo_entrega.nombre %>
+									<% end %>
+								</td>
+							</tr><br>
+							<tr>
+								<td><strong>Nº Municipal:</strong></td>
+								<td> </td>
+								<td><%= @orden.nro_municipal %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Block:</strong></td>
+								<td> </td>
+								<td><%= @orden.block %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Nº Propiedad:</strong></td>
+								<td> </td>
+								<td><%= @orden.numero_propieda %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Nº Departamento:</strong></td>
+								<td> </td>
+								<td><%= @orden.numero_departamento%></td>
+							</tr><br>
+							<tr>
+								<td><strong>Dirección adicional:</strong></td>
+								<td> </td>
+								<td><%= @orden.adicional_direccion %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Tipo Cliente:</strong></td>
+								<td> </td>
+								<td>
+									<% if !@orden.tipo_cliente.nil?	%>
+										<%= @orden.tipo_cliente.nombre %>
+									<% end %>
+								</td>
+							</tr><br>
+							<tr>
+								<td><strong>Meses Sin Lectura:</strong></td>
+								<td> </td>
+								<td><%= @orden.meses_sin_lectura%></td>
+							</tr><br><tr>
+								<td><strong>Meses Sin Consumo:</strong></td>
+								<td> </td>
+								<td><%= @orden.meses_sin_consumo %></td>
+							</tr><br><tr>
+								<td><strong>Flag Corte:</strong></td>
+								<td> </td>
+								<td><%= @orden.flag_corte_suministro %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Estado Corte:</strong></td>
+								<td> </td>
+								<td><%= @orden.estado_corte %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Lectura Obligada:</strong></td>
+								<td> </td>
+								<td><%= @orden.lectura_obligada %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Secuencia:</strong></td>
+								<td> </td>
+								<td><%= @orden.secuencia_lector %></td>
+							</tr><br>
+							<tr>
+								<td><strong>Comuna:</strong></td>
+								<td> </td>
+								<td><%= @orden.comuna.nombre %></td>
+							</tr>
+					</div>
+			<div class="col-md-6">
+				<legend>Detalle Lectura</legend>
+					<tr>
+						<td><strong>Numerador: </strong></td>
+						<td> </td>
+						<td><%= @detalle.numerador.nombre  %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Lectura Anterior: </strong></td>
+						<td> </td>
+						<td><%= @detalle.lectura_anterior %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Lectura Promedio: </strong></td>
+						<td> </td>
+						<td><%= @detalle.lectura_promedio %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Lectura Actual: </strong></td>
+						<td> </td>
+						<td><%= @detalle.lectura_actual  %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Rango Superior: </strong></td>
+						<td> </td>
+						<td><%= @detalle.rango_superior  %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Rango Inferior: </strong></td>
+						<td> </td>
+						<td><%= @detalle.rango_inferior  %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Fecha Ejecución: </strong></td>
+						<td> </td>
+						<td><%= @detalle.fecha_ejecucion.strftime("%d/%m/%Y %H:%M:%S %p ")  %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Clave Lectura: </strong></td>
+						<td> </td>
+						<td><%= @detalle.clave_lectura.nombre  %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Clave Lectura Anterior: </strong></td>
+						<td> </td>
+						<td><%=   @detalle.clave_lectura_anterior %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Clave Lectura Anterior 2: </strong></td>
+						<td> </td>
+						<td><%= @detalle.clave_lectura_anterior_2 %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Clave Lectura Anterior 3: </strong></td>
+						<td> </td>
+						<td><%= @detalle.clave_lectura_anterior_3 %></td>
+					</tr><br>
+					<tr>
+						<td><strong>M3 Acumulados: </strong></td>
+						<td> </td>
+						<td><%= @detalle.m3_acumulados %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Nº Digitos Numerador: </strong></td>
+						<td> </td>
+						<td><%=  @detalle.numero_digitos_numerador %></td>
+					</tr><br>
+					<tr>
+						<td><strong>Fecha Lectura Anterior: </strong></td>
+						<td> </td>
+						<td><%= @detalle.fecha_lectura_anterior %></td>
+					</tr>
+				</div>
+			<div class="row col-md-6">
+				<hr>
+				<legend>Enviar a Verificación</legend>
+				<div class="panel panel-default">
+  				<div class="panel-body">
+						<div class="row">
+							<div class="col-md-6">
+							<label for="">Lector : </label><br>
+							<label for="">Nuevo Lector :</label> </div>
+						</3div>
+						<div class="col-md-6">
+							<label for=""><%= @orden.asignacion.empleado.nombre_completo%></label>
+							<%=select_tag "Empleado", options_from_collection_for_select(@lectores, "id", "nombre_completo"), :prompt=> "Seleccione Lector", :class => "form-control input-sm"%>
+						</div>
+						</div>
+						<hr>
+					<div>
+						<button type="button" class="btn btn-primary pull-right" onclick="relectura('<%= @orden.id %>', '<%= @analisis %>');">
+						<span class="mdi mdi-repeat"></span> Releer</button>
+					</div>
+			</div>
+		</div>					
+	<% end %>		
+		</div>
+	</div>
+</div>
+
+
+<script>
+	function relectura(orden_id, analisis){
+		 if($("#Empleado option:selected").val() == 0) {
+            alert("Debe Seleccionar un Empleado");
+            return false;
+        }
+        else{
+			var lector = document.getElementById("Empleado").value;
+			$.ajax({
+	            url:"<%=url_for :controller => 'analisis',:action => 'relectura' %>",
+	            data:'orden_id=' + encodeURIComponent(orden_id)+ "&" + 'lector=' + encodeURIComponent(lector)+ "&" + 'analisis=' + encodeURIComponent(analisis),
+	            cache:false,
+	            success:function (data) {}
+	         })
+		}
+
+
+	}
+</script>

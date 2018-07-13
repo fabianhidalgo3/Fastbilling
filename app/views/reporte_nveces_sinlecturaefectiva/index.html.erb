@@ -1,0 +1,72 @@
+<h3>Clientes con "N" veces sin Lectura Efectiva </h3>
+<hr>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+
+		<div class="col-md-12">
+			<div class="col-md-2">
+				<label for="">Región</label>
+				<%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "nombre"), :prompt=> "Seleccionar", :class => "form-control input-sm" , :onchange => 'cargaPorciones();cargaComunas();'%>
+			</div>
+			<div class="col-md-2">
+				<label for="">Porción</label>
+				<%= render 'carga_porciones' %>
+			</div>
+			<div class="col-md-2">
+				<label for="">Comunas:</label>
+				<%= render 'carga_comunas'	%>
+			</div>
+			<div class="col-md-2">
+				<br>
+				<button class="form-control btn btn-primary"  onclick="cargaFiltro();"><span class="mdi mdi-magnify
+		" style="color:white" ></span> Buscar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<%= render 'carga_filtro' %>
+
+
+<script type="text/javascript">
+
+	function cargaFiltro(){
+		var zona = document.getElementById("Zona").value;
+		var porcion = document.getElementById("Porcion").value;
+		var comuna = document.getElementById("Comuna").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_nveces_sinlecturaefectiva',:action => 'carga_filtro' %>",
+						data: 'zona=' + encodeURIComponent(zona)+ "&" + 
+									'porcion=' + encodeURIComponent(porcion)+ "&" + 
+									'comuna=' + encodeURIComponent(comuna),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+
+
+	function cargaPorciones() {
+		var zona = document.getElementById("Zona").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_nveces_sinlecturaefectiva',:action => 'carga_porciones' %>",
+            data: 'zona=' + encodeURIComponent(zona),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+
+	function cargaComunas() {
+		var zona = document.getElementById("Zona").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_nveces_sinlecturaefectiva',:action => 'carga_comunas' %>",
+            data: 'zona=' + encodeURIComponent(zona),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+	$(function(){
+    	$('.pagination a').attr('data-remote', 'true')
+	});
+
+</script>

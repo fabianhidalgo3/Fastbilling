@@ -1,0 +1,118 @@
+<%= form_tag comunas_factor_cobros_path, :method => 'post', id:'nueva_vinculacion' do%>
+  <h3>Vinculación de Tarifas</h3>
+  <hr>
+  <div class="row">
+    <div class="col-md-4">
+      <label for="">Región</label>
+      <div id="regiones">
+        <%=select_tag "Regiones", options_from_collection_for_select(@regiones, "id", "nombre"),:onchange => 'provincias();', :prompt=> "Seleccione", :class => "form-control"%>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <label for="">Provincia</label>
+      <%= render 'carga_provincias'%>
+    </div>
+    <div class="col-md-3">
+      <label for="">Tarifa</label>
+      <div id="tarifas">
+        <%=select_tag "Tarifa", options_from_collection_for_select(@factorCobro, "id", "nombre"),:onchange => 'tarifas();', :prompt=> "Seleccione", :class => "form-control"%>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="panel panel-default">
+    <div class="panel-heading"><b>Comunas</b></div>
+    <div class="panel-body">
+      <%= render 'carga_comunas'%>
+    </div>
+  </div>
+  <div class="btn-group pull-right">
+    <%= link_to factor_cobros_path, class: "btn btn-danger" do %>
+      <i class="mdi mdi-backspace" style="color:white"></i> Volver
+    <% end %>
+    <button type="button" id="vincular" class="btn btn-primary" onclick="vincular_comunas();" aria-label="Left Align">
+      <span class="mdi mdi-content-save" aria-hidden="true" style="color:white"></span> Guardar
+    </button>
+  </div>
+<% end %>
+
+<script type="text/javascript">
+  
+  function vincular_comunas(){
+    var mensaje = "Debe seleccionar";
+    if($("#Regiones option:selected").val() == 0) {
+      mensaje += " Región";
+    }
+
+    if($("#Provincias option:selected").val() == 0) {
+      mensaje += " Provincia";
+    }
+
+    if($("#Tarifa option:selected").val() == 0) {
+      mensaje += " Tarifa";
+    }
+
+    var selec = $(':checkbox');
+    var a = false;
+    for (i = 0; i < selec.length; i++)
+    {
+      if (selec[i].checked) {
+        a = true;
+      }
+    }
+
+    if(!a && selec.length > 0)
+    {
+      mensaje += " Comuna";
+    }
+
+    if(mensaje == "Debe seleccionar" && a)
+    {
+       document.getElementById('nueva_vinculacion').submit();
+    }
+    else
+    {
+      Push.create("", {
+          body: mensaje,
+          icon: '<%= asset_path('error.png') %>',
+          timeout: 4000,
+          onClick: function () {
+              window.focus();
+              this.close();
+          }
+      });
+    }
+
+  }
+
+  // Muestra las Provinicias de una Región
+  function provincias() {
+    var region = document.getElementById("Regiones").value;
+    $.ajax({
+      url: "<%=url_for :controller => 'comunas_factor_cobros',:action => 'carga_provincias' %>",
+      data: 'region=' + encodeURIComponent(region),
+      cache: false,
+      success: function(data) {}
+    })
+    
+    $.ajax({
+      url: "<%=url_for :controller => 'comunas_factor_cobros',:action => 'carga_comunas' %>",
+      data: 'region=' + encodeURIComponent(region),
+      cache: false,
+      success: function(data) {}
+    })
+  }
+  
+  //Muestra las comunas de un Provincia
+  function comunas() {
+    /*Carga las porciones disponibles de una zona */
+    var provincia = document.getElementById("Provincias").value;
+    $.ajax({
+      url: "<%=url_for :controller => 'comunas_factor_cobros',:action => 'carga_comunas' %>",
+      data: 'provincia=' + encodeURIComponent(provincia),
+      cache: false,
+      success: function(data) {}
+    })
+  }
+
+ </script>

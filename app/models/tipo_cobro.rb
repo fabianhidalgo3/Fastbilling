@@ -1,0 +1,2 @@
+class TipoCobro < ApplicationRecord
+end

@@ -1,0 +1,7 @@
+<div id="porciones">
+	<% if !@porciones.nil?  %>
+	  <%= select_tag "Porcion", options_from_collection_for_select(@porciones, "id", "codigo_nombre"), :prompt=> "Seleccione" , :class => "form-control input-sm"%>
+	<%else%>
+	  <select name="Porcion" id="Porcion" class="form-control input-sm" ><option value="">Seleccione</option>></select>
+	<%end%>
+</div>	

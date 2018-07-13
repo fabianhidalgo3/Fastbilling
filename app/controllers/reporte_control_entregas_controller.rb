@@ -1,0 +1,2 @@
+class ReporteControlEntregasController < ApplicationController
+end

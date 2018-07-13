@@ -1,0 +1,159 @@
+<title>Agregar Empleado</title>
+<div class="row">
+		<div class="panel panel-default" id="panel-titulos">
+		<div class="panel-body">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+				<li class="breadcrumb-item">Mantenedores</li>
+				<li class="breadcrumb-item">Empleados</li>
+	  		<li class="breadcrumb-item active">Agregar Empleados</li>
+			</ol>
+		</div>
+	</div>
+  <%= form_tag empleados_path, :method => 'post' do %>
+      <div class="col-md-12">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+								<b>Datos Funcionario</b> <span class="mdi mdi-account-card-details">
+            </div>
+            <div class="panel-body">
+              <!-- Si empleado diferente de nulo Editar-->
+              <% if @empleado.errors.any? %>
+                  <% @empleado.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                  <% end %>
+              <% end %>
+              <% if @empleado.nombre.nil? %>
+                  <div class="col-md-6">
+                    <div class="field">
+                      <%= label_tag :nombre, "Nombres" %><br>
+                      <%= text_field_tag :nombre, '', :required => true, :class => "form-control input-sm", :placeholder => "Ingrese nombre completo" %>
+                    </div>
+                    <div class="field">
+                      <%= label_tag :apellido_paterno, "Apellido Paterno" %>
+                      <%= text_field_tag :apellido_paterno, '', :required => true, :class => "form-control input-sm", :placeholder => "Ingrese apellido paterno " %>
+                    </div>
+                    <%= render 'carga_contratistas' %>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="field">
+                      <%= label_tag :rut, "Rut" %><br>
+                      <%= text_field_tag :rut, '', :required => true, :class => "form-control input-sm", :placeholder => "Ingrese apellido rut " %>
+                    </div>
+                    <div class="field">
+                      <%= label_tag :apellido_materno %>
+                      <%= text_field_tag :apellido_materno, '', :required => true, :class => "form-control input-sm", :placeholder => "Ingrese apellido materno " %>
+                    </div>
+                    <%= render 'carga_subempresas' %>
+                  </div>
+              <% else %>
+                  <div class="col-md-6">
+                    <div class="field">
+                      <%= label_tag :nombre, "Nombres" %><br>
+                      <%= text_field_tag :nombre, '', :required => true, :class => "form-control input-sm", :placeholder => "Ingrese nombre completo", :value => @empleado.nombre %>
+                    </div>
+                    <div class="field">
+                      <%= label_tag :apellido_paterno, "Apellido Paterno" %>
+                      <%= text_field_tag :apellido_paterno, '', :required => true, :class => "form-control input-sm", :placeholder => "Ingrese apellido paterno ", :value => @empleado.apellido_paterno %>
+                    </div>
+                    <%= render 'carga_contratistas' %>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="field">
+                      <%= label_tag :rut, "Rut" %><br>
+                      <%= text_field_tag :rut, '', :required => true, :class => "form-control input-sm", :placeholder => "Ingrese rut ", :value => @empleado.rut %>
+                    </div>
+                    <div class="field">
+                      <%= label_tag :apellido_materno %>
+                      <%= text_field_tag :apellido_materno, '', :required => true, :class => "form-control input-sm", :placeholder => "Ingrese apellido materno ", :value => @empleado.apellido_materno %>
+                    </div>
+                    <%= render 'carga_subempresas' %>
+
+                  </div>
+              <% end %>
+            </div>
+          </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+								<b>Región</b> <span class="mdi mdi-crosshairs-gps">
+            </div>
+            <div class="panel-body">
+              <div class="col-md-12">
+                <%= render 'carga_zonas' %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+							<b>Datos Usuario </b> <span class="mdi mdi-account">
+						</div>
+            <div class="panel-body">
+              <div class="col-md-5">
+
+                <div class="field">
+                  <%= label_tag :email, "Nombre Usuario" %><br>
+                  <%= text_field_tag :email, '', :required => true, :class => "form-control input-sm", :placeholder => "Ingrese nombre usuario ",:autocomplete => :off %>
+                </div>
+                <label for="">Perfil</label>
+                <%= select_tag "Perfil", options_from_collection_for_select(Perfil.all, "id", "nombre"), :prompt => "Seleccione ", :class => "form-control input-sm", :onchange => 'equipos();' %>
+              </div>
+              <div class="col-md-6">
+                <div class="field">
+                  <%= label_tag :password, "Contraseña" %>
+                  <%= password_field_tag :password, '', :required => true, :class => "form-control input-sm", :placeholder => "Ingrese contraseña", :autocomplete => :off%>
+                  <br>
+                  <button onclick="mostrarContrasena();" data-toggle="tooltip" data-placement="right" title="Ver Contraseña" type="button" class="btn btn-default btn-sm">
+                    <i class="mdi mdi-eye "></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <%= render 'carga_equipos' %>
+          <div class="actions pull-right">
+						<div class="btn-group" role="group" aria-label="...">
+								<%= link_to '<i class="mdi mdi-backspace"></i> Volver'.html_safe, empleados_path, class: "btn btn-primary"%>
+								<button type="submit" class="btn btn-default">Guardar
+									<span class="mdi mdi-content-save"></span>
+								</button>
+						</div>
+          </div>
+        </div>
+      </div>
+  <% end %>
+  </div>
+
+<!-- # > Funciones JS  -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    // Mensajes en los Botones
+    $('[data-toggle="tooltip"]').tooltip();   
+    // Mascara Inputs 
+    // $('#rut').mask('00.000.000-0');
+    // $('#email').val('');
+    $('#password').val('');
+
+	});
+  // Render Panel Equipos
+  function equipos() { 
+    var perfil = document.getElementById("Perfil").value;
+    $.ajax({
+      url: "<%=url_for :controller => 'empleados',:action => 'carga_equipos' %>",
+      data: 'perfil=' + encodeURIComponent(perfil),
+      cache: false,
+      success: function (data) {}
+    })
+  }
+  // Muestra el Input de la contraseña
+  function mostrarContrasena(){
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+  }
+</script>

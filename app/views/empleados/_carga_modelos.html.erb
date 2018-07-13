@@ -1,0 +1,11 @@
+<div id="modelos">
+  <% if !@modelos.nil?  %>
+  	<label>Modelos</label><br>
+    <%=select_tag "Modelo", options_from_collection_for_select(@modelos, "id", "nombre"), :prompt=> "Seleccione Modelos",
+    :class => "form-control"%>
+  <%else%>
+  	<label>Modelos</label><br>
+    <select name="Modelo" id="Modelo" class="form-control" ><option value="">Seleccione Modelo</option>></select><hr>
+  <%end%>
+</div>
+

@@ -1,0 +1,67 @@
+<h3>Documentos Pendientes de Facturación</h3>
+<hr>
+<div class="row">
+  <div class="col-md-2">
+    <label>Empresas:</label><br>
+    <%=select_tag "Empresa", options_from_collection_for_select(@empresas, "id", "razon_social"),
+                       :prompt=> "Seleccione", :class =>"form-control input-sm"%>
+  </div>
+  <div class="col-md-2">
+    <label for="">Tipo Documento:</label>
+    <%=select_tag "T_documento", options_from_collection_for_select(@tipo_documentos, "id", "nombre"),
+                       :prompt=> "Seleccione", :class =>"form-control input-sm"%>
+  </div>
+  <div class="col-md-2">
+    <label for="">Estado Documento:</label>
+    <%=select_tag "E_documento", options_from_collection_for_select(@estado_facturacions, "id", "nombre"),
+                       :prompt=> "Seleccionar todos", :class =>"form-control input-sm"%>
+  </div>
+  <div class="col-md-2">
+    <label for="">Desde:</label><br>
+   	<input type="text" id="desde" class="form-control input-sm">
+  </div>
+  <div class="col-md-2">
+    <label for="">Hasta:</label><br>
+    <input type="text" id="hasta" class="form-control input-sm">
+  </div>
+  <div class="col-md-2">
+    <br>
+    <button type="button" class="btn btn-primary form-control " onclick="carga_filtro();">
+      <span class="mdi mdi-magnify" style="color:white"></span> Buscar
+    </button>
+  </div>	
+</div>
+
+<script type="text/javascript">
+	//Calendarios
+    $(function() {
+        $('#desde').datepicker({
+            dateFormat: 'yy/mm/dd',
+            changeMonth: true,
+            changeYear: true,
+            firstDay: 1,
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            monthNames: ['Enero', 'Febrero', 'Marzo',
+                    'Abril', 'Mayo', 'Junio',
+                    'Julio', 'Agosto', 'Septiembre',
+                    'Octubre', 'Noviembre', 'Diciembre'
+                    ],
+            dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
+        });
+
+        $('#hasta').datepicker({
+            dateFormat: 'yy/mm/dd',
+            changeMonth: true,
+            changeYear: true,
+            firstDay: 1,
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            monthNames: ['Enero', 'Febrero', 'Marzo',
+                    'Abril', 'Mayo', 'Junio',
+                    'Julio', 'Agosto', 'Septiembre',
+                    'Octubre', 'Noviembre', 'Diciembre'
+                ],
+            dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
+        });
+    });
+	
+</script>

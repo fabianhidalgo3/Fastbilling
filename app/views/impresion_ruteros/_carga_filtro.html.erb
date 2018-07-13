@@ -1,0 +1,88 @@
+<div id="carga_filtro">
+	<div class="panel panel-default">
+		<div class="panel-heading"><b>Resultados de la Búsqueda</b> <span class="mdi mdi-table-large"></span></div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-12">
+					<p>Exportar:</p><hr>
+					<button onclick="exportarPdf();" type="button" class="btn btn-pdf btn-sm" data-toggle="tooltip" data-placement="top" title="PDF"><span class="mdi mdi-file-pdf mdi-18px"></span></button>
+					<button onclick="exportarCsv();" type="button" class="btn btn-excel btn-sm" data-toggle="tooltip" data-placement="top" title="CSV"><span class="mdi mdi-file-excel mdi-18px"></span></button>
+					<br><br>	
+					<tr>
+						<th>Cant. Ordenes de Lectura</th>
+						<th>: </th>
+						<% if !@lista_ordenes.nil?%>
+							<th><%= label_tag @lista_ordenes.count %></th>
+						<% end %>
+					</tr>
+				</div>
+			</div>
+			<hr>
+			<div class="table-responsive">
+				<table class="table table-condensed table-hover table-striped table-bordered animated fadeIn fast">
+					<thead>
+						<tr>
+							<th style="width: 10%">Porción</th>
+							<th style="width: 10%">Unidad de Lectura</th>
+							<th>Comuna</th>
+							<th style="width: 25%">Nombre cliente</th>
+							<th >Nº Cliente</th>
+							<th>Correlativo</th>
+							<th style="width: 20%">Dirección de Entrega</th>
+							<th>Nº Medidor</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% if !@lista_ordenes.nil?%>
+							<% @lista_ordenes.each do |lista| %>
+								<tr>
+									<td align="center"><b><%= lista.rutum.porcion.codigo_nombre %></b></td>
+									<td align="center"><b><%= lista.rutum.codigo_nombre %></b></td>
+									<td align="center"><b><%= lista.comuna.nombre %></b></td>
+									<td align="center"><b><%= lista.cliente.nombre %></b></td>
+									<td align="center" style="color:#d9230f;"><b><%= lista.cliente.numero_cliente%></b></td>
+									<td align="center"><b><%= lista.secuencia_lector %></b></td>
+									<td align="center"><%= lista.direccion_orden %></td>
+									<td align="center" style="color:#d9230f;"><b><%= lista.medidor.numero_medidor %></b></td>
+								</tr>
+							<% end %>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+			<div class="row">
+				<center>
+					<% if !@lista_ordenes.nil? %>
+						<%= will_paginate @lista_ordenes, renderer: BootstrapPagination::Rails %>
+					<% end %>
+				</center>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+  //tooltip mensajes en los botones
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+  // Exportar CSV
+  function exportarCsv(){
+    var zona = document.getElementById("Zona").value;
+    var porcion = document.getElementById("Porcion").value;
+    var proceso = document.getElementById("tipo_lectura").value;
+    var ruta = document.getElementById("Ruta").value;
+    url = "<%=url_for :controller => 'impresion_ruteros',:action => 'exportar_csv' %>",
+		location.href= url + '?zona=' + encodeURIComponent(zona)+ '&porcion=' + encodeURIComponent(porcion)+ '&proceso=' + encodeURIComponent(proceso) + '&ruta=' + encodeURIComponent(ruta);
+  }
+
+	function exportarPdf(){
+    var zona = document.getElementById("Zona").value;
+    var porcion = document.getElementById("Porcion").value;
+    var proceso = document.getElementById("tipo_lectura").value;
+    var ruta = document.getElementById("Ruta").value;
+    url = "<%=url_for :controller => 'impresion_ruteros',:action => 'exportar_pdf', :format => :pdf %>",
+		location.href= url + '?zona=' + encodeURIComponent(zona)+ '&porcion=' + encodeURIComponent(porcion)+ '&proceso=' + encodeURIComponent(proceso) + '&ruta=' + encodeURIComponent(ruta);
+  }
+</script>

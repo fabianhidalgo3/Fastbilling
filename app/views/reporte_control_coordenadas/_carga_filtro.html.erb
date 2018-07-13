@@ -1,0 +1,167 @@
+<div id="carga_filtro">
+	<div class="panel panel-default">
+		<div class="panel-heading"><b>Resultados de la Busqueda</b> <span class="mdi mdi-table-large"></span></div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-2">
+					<div class="btn-group">
+						<button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="mdi mdi-cloud-download"></span>	Exportar <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a onclick="exportarPdf();" target="_blank" target="_blank"><span class="mdi mdi-file-pdf mdi-18px"></span> PDF </a></li>
+							<li><a onclick="exportarExcel();"><span class="mdi mdi-file-excel mdi-18px"></span> CSV </a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="table-responsive">
+				<table class="table table-striped table-hover table-condensed table-bordered animated fadeIn fast">
+					<thead>
+										<tr>
+												<th>Comuna</th>
+												<th>Lector</th>
+												<th>Ruta</th>
+												<th>Nº Instalación </th>
+												<th>Nº Cliente</th>
+												<th>Cliente</th>
+												<th style="width:15%">Dirección</th>
+												<th>Fecha Lectura</th>
+												<th>Hora Visita</th>
+												<th>Latitud</th>
+												<th>Longitud</th>
+												<th><span class="mdi mdi-map-marker" style="color: black"></span></th>
+										</tr>
+								</thead>
+								<tbody>
+										<% if !@listaRsiete.nil?%>
+												<% @listaRsiete.each do |l| %>
+														<% if (l.orden_lectura.gps_latitud.nil?) || (l.orden_lectura.gps_longitud.nil?) %>
+																<tr class="danger">
+														<% else %>
+																<tr>
+														<% end %>
+																<td><b><%= l.orden_lectura.comuna.nombre%></b></td>
+																<td><%= l.empleado.nombre_completo%></td>
+																<td><b><%= l.rutum.codigo_nombre%></b></td>
+																<td><b><%= l.orden_lectura.instalacion.codigo%></b></td>
+																<td><b><%= l.orden_lectura.cliente.numero_cliente%></b></td>																					
+																<td><%= l.orden_lectura.cliente.nombre%></td>
+																<td><%= l.orden_lectura.direccion%></td>
+																<td>
+																	<b>
+																	<% if  !l.orden_lectura.detalle_orden_lectura.first.fecha_ejecucion.blank? %>
+																		<%= l.orden_lectura.detalle_orden_lectura.first.fecha_ejecucion.strftime("%e/%m/%Y ")%>
+																	<% end %>
+																	</b>
+																</td>
+																<td>
+																	<b>
+																	<% if  !l.orden_lectura.detalle_orden_lectura.first.fecha_ejecucion.blank? %>
+																		<%= l.orden_lectura.detalle_orden_lectura.first.fecha_ejecucion.strftime("%H:%M:%S")%>
+																	<%end%>
+																	</b>
+																</td>
+																<td><%= l.orden_lectura.gps_latitud%></td>
+																<td><%= l.orden_lectura.gps_longitud%></td>
+																<td>
+																	<% if (l.orden_lectura.gps_latitud.nil?) || (l.orden_lectura.gps_longitud.nil?) %>
+																		<button type="button" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="Sin Ubicación" disabled>
+																			<span class="mdi mdi-map-marker-off mdi-8px" style="color:white" ></span>
+																		</button>
+																	<%else%>
+																		<button onclick="mostrarModal('<%=l.orden_lectura.gps_latitud%>','<%=l.orden_lectura.gps_longitud%>');" type="button" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="top" title="Mostrar Ubicación">
+																			<span class="mdi mdi-map-marker mdi-8px" style="color:white" ></span>
+																		</button>
+																	<% end %>
+																</td>
+														</tr>
+												<% end %>
+									<% end %>
+								</tbody>
+						</table>
+				</div>
+				<div class="row">
+						<center>
+						<% if !@listaRsiete.nil? %>
+								<%= will_paginate @listaRsiete, renderer: BootstrapPagination::Rails %>
+						<% end %>
+						</center>
+				</div>
+		</div>
+	</div>
+</div>
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content" style="width: 850px" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Recorrido Lector</h4>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <%= render 'carga_ubicacion' %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success  pull-left" onclick="mapa();">Refrescar Mapa</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    //tooltip mensajes en los botones
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    //muestra modal con mapa de las ubicaciones del lector
+   function mostrarModal(x,y){
+        var latitud = x
+        var longitud = y
+            $.ajax({
+                url:"<%=url_for :controller => 'reporte_control_coordenadas',:action => 'carga_ubicacion' %>",
+                data:'latitud=' + encodeURIComponent(latitud) + "&" + 'longitud=' + encodeURIComponent(longitud),
+                cache:false,
+                success:function (data) {}
+            })
+            $('#myModal').modal();
+            mapa();
+    }
+
+    // Exportar CSV
+    function exportarExcel(){
+        var georeferencia
+        if(document.getElementById('georeferencia').checked) {
+            georeferencia = 1
+        } else {
+            georeferencia =0
+        }
+        var zona = document.getElementById("Zona").value;
+        var porcion = document.getElementById("Porcion").value;
+        var empleado = document.getElementById("Empleado").value;
+        url = "<%=url_for :controller => 'reporte_control_coordenadas',:action => 'exportar_excel' %>",
+        location.href= url + '?zona=' + encodeURIComponent(zona)+ '&porcion=' + encodeURIComponent(porcion)
+                    + '&empleado=' + encodeURIComponent(empleado)+ '&georeferencia=' + encodeURIComponent(georeferencia);
+    }
+
+    // Exportar PDF
+    function exportarPdf(){
+        var georeferencia
+        if(document.getElementById('georeferencia').checked) {
+            georeferencia = 1
+        } else {
+            georeferencia =0
+        }
+        var zona = document.getElementById("Zona").value;
+        var porcion = document.getElementById("Porcion").value;
+        var empleado = document.getElementById("Empleado").value;
+        url = "<%=url_for :controller => 'reporte_control_coordenadas',:action => 'exportar_pdf' %>",
+        location.href= url + '?zona=' + encodeURIComponent(zona)+ '&porcion=' + encodeURIComponent(porcion)
+                   + '&empleado=' + encodeURIComponent(empleado)+ '&georeferencia=' + encodeURIComponent(georeferencia);
+    }
+
+
+</script>

@@ -1,0 +1,2 @@
+class TipoReparto < ApplicationRecord
+end

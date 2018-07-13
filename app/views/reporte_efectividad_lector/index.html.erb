@@ -1,0 +1,96 @@
+<title>Efectividad por Lector</title>
+<div class="panel panel-default" id="panel-titulos">
+		<div class="panel-body">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+				<li class="breadcrumb-item">Lectura </li>
+				<li class="breadcrumb-item">Reportes </li>
+	  		<li class="breadcrumb-item active">Efectividad por Lector</li>
+			</ol>
+		</div>
+	</div>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-2">
+					<label for="">Región</label>
+					<%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "nombre"), :prompt=> "Seleccionar", :class => "form-control input-sm" , :onchange => 'cargaLectores();'%>
+				</div>
+				<div class="col-md-2">
+					<label for="">Desde</label>
+					<input type="text" id="desde" class="form-control input-sm">
+				</div>
+				<div class="col-md-2">
+					<label for="">Hasta</label>
+					<input type="text" id="hasta" class="form-control input-sm">
+				</div>
+				<div class="col-md-3">
+					<label for="">Lectores</label>
+					<%= render 'carga_lectores' %>
+				</div>	
+				<div class="col-md-2">
+						<br>
+						<button type="button" onclick="carga_filtro();" class="btn btn-primary form-control"><span style="color:white" class="mdi mdi-magnify"></span> Buscar</button>			
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<div class="">
+	<%= render 'carga_filtro'%>
+</div>
+
+<script type="text/javascript">
+	function carga_filtro(){
+		var zona    = document.getElementById("Zona").value;
+		var lector = document.getElementById("Lector").value;
+		$.ajax({
+      url: "<%=url_for :controller => 'reporte_efectividad_lector',:action => 'carga_filtro' %>",
+      data: 'zona=' + encodeURIComponent(zona)+ "&" +
+						'lector=' + encodeURIComponent(lector),
+      cache: false,
+      success: function(data) {}
+        })
+	}
+
+	//Carga Porciones
+	function cargaLectores() {
+		var zona = document.getElementById("Zona").value;
+		$.ajax({
+    	url: "<%=url_for :controller => 'reporte_efectividad_lector',:action => 'carga_lectores' %>",
+			data: 'zona=' + encodeURIComponent(zona),
+    	cache: false,
+      success: function(data) {}
+        })
+	}
+	
+	$(function(){
+		$('.pagination a').attr('data-remote', 'true')
+	});
+	$(function() {
+		$('#desde').datepicker({
+			dateFormat: 'dd/mm/yy',
+			changeMonth: true,
+			changeYear: true,
+			firstDay: 1,
+			monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+			monthNames: ['Enero', 'Febrero', 'Marzo','Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Septiembre','Octubre', 'Noviembre', 'Diciembre'],
+			dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
+
+		});
+		$('#hasta').datepicker({
+			dateFormat: 'dd/mm/yy',
+			changeMonth: true,
+			changeYear: true,
+			firstDay: 1,
+			monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+			monthNames: ['Enero', 'Febrero', 'Marzo','Abril', 'Mayo', 'Junio','Julio', 'Agosto', 'Septiembre','Octubre', 'Noviembre', 'Diciembre'],
+			dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
+
+		});
+	});
+
+	
+</script>

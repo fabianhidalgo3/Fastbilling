@@ -1,0 +1,2 @@
+class EstadoFacturacion < ApplicationRecord
+end

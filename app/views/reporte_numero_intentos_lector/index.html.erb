@@ -1,0 +1,93 @@
+<title>Reporte Numeros de Intentos por Lector</title>
+<div class="panel panel-default" id="panel-titulos">
+		<div class="panel-body">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+				<li class="breadcrumb-item">Lectura </li>
+				<li class="breadcrumb-item">Reportes </li>
+	  		<li class="breadcrumb-item active">Número de Intentos por Lector</li>
+			</ol>
+		</div>
+	</div>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-2">
+					<label for="">Región</label>
+					<%=select_tag "Zona", options_from_collection_for_select(@zonas, "id", "nombre"), :prompt=> "Seleccionar", :class => "form-control input-sm" , :onchange => 'carga_porciones();'%>
+				</div>
+				<div class="col-md-2">
+					<label for="">Porción</label>
+					<%= render 'carga_porciones' %>
+				</div>
+				<div class="col-md-2">
+					<label for="">Proceso</label>
+					<%=select_tag "tipo_lectura", options_from_collection_for_select(@tipo_lectura, "id", "nombre"), :prompt=> "Seleccione" , :class => "form-control input-sm"%>
+				</div>
+				<div class="col-md-2">
+					<label for="">Lector</label>
+					<%= render 'carga_empleados' %>
+				</div>
+				<div class="col-md-2">
+					<br>
+					<button type="button" onclick="carga_filtro();" class="btn btn-primary form-control"><span style="color:white" class="mdi mdi-magnify"></span> Buscar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<%= render 'carga_filtro' %>
+<script type="text/javascript">
+	
+	// Carga Comunas
+	function carga_comunas() {
+		var zona = document.getElementById("Zona").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_numero_intentos_lector',:action => 'carga_comunas' %>",
+            data: 'zona=' + encodeURIComponent(zona),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+
+	//Carga Empleados
+	function carga_empleados() {
+		var porcion = document.getElementById("Porcion").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_numero_intentos_lector',:action => 'carga_empleados' %>",
+            data: 'porcion=' + encodeURIComponent(porcion),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+
+	//Carga Porciones
+	function carga_porciones() {
+		var zona = document.getElementById("Zona").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_numero_intentos_lector',:action => 'carga_porciones' %>",
+            data: 'zona=' + encodeURIComponent(zona),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+	//Carga Filtro
+	function carga_filtro(){
+		var zona = document.getElementById("Zona").value;
+		var porcion = document.getElementById("Porcion").value;
+		var tipo_lectura = document.getElementById("tipo_lectura").value;
+		var empleado = document.getElementById("Empleado").value;
+		$.ajax({
+            url: "<%=url_for :controller => 'reporte_numero_intentos_lector',:action => 'carga_filtro' %>",
+            data: 'zona=' + encodeURIComponent(zona)+ "&" + 'porcion=' + encodeURIComponent(porcion)+ "&" + 'tipo_lectura=' + encodeURIComponent(tipo_lectura)+ "&" + 'empleado=' + encodeURIComponent(empleado),
+            cache: false,
+            success: function(data) {}
+        })
+	}
+	
+	$(function(){
+    	$('.pagination a').attr('data-remote', 'true')
+	});
+</script>

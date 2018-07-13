@@ -1,0 +1,73 @@
+<title>Perfiles de usuario</title>
+<!-- # > BreadCrumb Items -->
+<div class="panel panel-default" id="panel-titulos">
+	<div class="panel-body">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+	  	<li class="breadcrumb-item">Catastro </li>
+	  	<li class="breadcrumb-item active">Perfiles de Usuario</li>
+		</ol>
+	</div>
+</div>
+<!-- # > Botones e Información -->	
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-12">
+				<p>Exportar:</p><hr>
+				<button onclick="exportarPdf();" type="button" class="btn btn-pdf btn-sm" data-toggle="tooltip" data-placement="top" title="PDF"><span class="mdi mdi-file-pdf mdi-18px"></span></button>
+				<button onclick="exportarCsv();" type="button" class="btn btn-excel btn-sm" data-toggle="tooltip" data-placement="top" title="CSV"><span class="mdi mdi-file-excel mdi-18px"></span></button>
+				<br><br>
+				<tr>
+					<th>Cant. Perfiles:</th>
+					<th></th>
+					<th><%= label_tag @perfiles.count %></th>
+				</tr><br>
+				<tr>
+					<th>Cant. Usuarios:</th>
+					<th></th>
+					<th><%= label_tag @usuariosCount.to_s %></th>
+				</tr>
+			</div>
+		</div>
+		<hr>
+		<!-- # > Tabla Contenido -->	
+		<div class="table-responsive">
+			<table class="table table-striped table-hover table-condensed table-bordered ">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th style="width: 10%">Cant. Usuarios</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @perfiles.each do |perfil| %>
+						<tr>
+							<td><b><%= perfil.nombre %></b></td>
+							<td style="font-size:14px">
+								<b><%= perfil.usuario.count %></b>
+							</td>
+						</tr>
+					<% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<!-- # > Funciones JS -->
+<script type="text/javascript">
+	// # > ToolTips Mensajes Botones
+  $(document).ready(function(){
+  	$('[data-toggle="tooltip"]').tooltip();
+	});
+	// # > Exportar CSV
+  function exportarCsv(){
+  	url = "<%=url_for :controller => 'perfils',:action => 'exportar_csv' %>",
+    location.href= url;
+	}
+	// # > Exportar PDF
+	function exportarPdf(){
+  	url = "<%=url_for :controller => 'perfils',:action => 'exportar_pdf', :format => :pdf %>",
+    location.href= url;
+	}
+</script>

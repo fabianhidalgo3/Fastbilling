@@ -1,0 +1,2 @@
+module TipoEstablecimientosHelper
+end

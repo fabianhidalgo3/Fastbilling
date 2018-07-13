@@ -1,0 +1,51 @@
+<div id="carga_filtro">
+  <div class="panel panel-default">
+		<div class="panel-heading"><b>Resultados de la Búsqueda</b> <span class="mdi mdi-table-large"></span></div>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-md-2">
+				</div>
+		  </div>
+			<br>	
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Porción</th>
+                    <th>Ruta</th>
+                    <th style="width:30%">Empleado</th>
+                    <th style="width:10%">Asignado</th>
+                    <th style="width:10%">Hora Inicio</th>
+                    <th style="width:10%">Hora Termino</th>
+                    <th style="width:10%">Total Horas</th>
+                </tr>
+            </thead>
+            <tbody>
+                 <% if !@lista.nil? %>
+                        <% @lista.each do |l| %>
+                            <tr>
+                                <td><%= l[0]%></td>
+                                <td><%= l[2]%></td>
+                                <td><center><%= l[1] %></center></td>
+                                <td style="font-size: 16px"><b><%= l[3]%></b></td>
+                                <td style="font-size: 16px"><b><%= l[4]%></b></td>
+                                <td style="font-size: 16px"><b><%= l[5]%></b></td>
+                                <td style="font-size: 16px"><b><%= l[6]%></b></td>
+                            </tr>
+                        <% end %>
+                    <% end %>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <center>
+        <% if !@lista.nil? %>
+            <%= will_paginate @lista, renderer: BootstrapPagination::Rails %>
+        <% end %>
+        </center>
+    </div>
+</div>
+</div>
+</div>
+
+

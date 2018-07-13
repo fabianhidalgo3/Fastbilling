@@ -1,0 +1,2 @@
+class EstadoLectura < ApplicationRecord
+end

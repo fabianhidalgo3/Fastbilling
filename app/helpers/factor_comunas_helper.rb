@@ -1,0 +1,2 @@
+module FactorComunasHelper
+end

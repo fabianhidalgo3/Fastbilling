@@ -1,0 +1,2 @@
+class EstadoReparto < ApplicationRecord
+end

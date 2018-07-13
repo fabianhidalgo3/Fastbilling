@@ -1,0 +1,46 @@
+<title>Devolucion de Documentos</title>
+<div class="panel panel-default" id="panel-titulos">
+	<div class="panel-body">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><%= link_to '<i class="mdi mdi-home"></i>'.html_safe, { :action => "index", :controller => :bienvenida }%></span></li>
+			<li class="breadcrumb-item">Reparto </li>
+			<li class="breadcrumb-item">Gestión de Repartos </li>
+	  	<li class="breadcrumb-item active">Devolucion de Documentos</li>
+		</ol>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading"><b>Buscador</b> <span class="mdi mdi-magnify"></span></div>
+	<div class="panel-body">
+		<div class="col-md-12">
+			<div class="col-md-2">
+				<label>Nº Documento:</label>
+				<input class="form-control input-sm" type="number" id="documento" required>
+			</div>
+    	<div class="col-md-2">
+    		<br>
+    		<button type="button" class="form-control btn btn-primary btn-sm" onclick="carga_filtro();">
+   				<span class="mdi mdi-magnify" style="color: white"></span> Buscar
+ 				</button>
+    	</div>
+		</div>
+	</div>
+</div>
+
+<div>
+	<%= render  "carga_filtro" %>
+</div>
+
+<script type="text/javascript">
+
+	function carga_filtro(){
+		var documento = document.getElementById("documento").value;
+  	$.ajax({
+    	url:"<%=url_for :controller => 'devoluciones',:action => 'carga_filtro' %>",
+    	data:'documento=' + encodeURIComponent(documento),
+    	cache:false,
+    	success:function (data) {}
+  	})  
+	} 
+	
+</script>

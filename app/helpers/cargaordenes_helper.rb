@@ -1,0 +1,2 @@
+module CargaordenesHelper
+end

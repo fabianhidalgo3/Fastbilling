@@ -1,0 +1,151 @@
+<div id="dividir_ruta_asignacion" >
+	<%= form_tag  :controller => 'asignacions', :action => 'asignacion_parcial', :method => 'post', :id => 'nueva_asignacion', :multipart => true do %>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<tr>
+							<th><b>Empleado:</b></th>
+							<th></th>
+							<th>
+								<% if !@lector.nil? %>
+									<%= @lector.nombre_completo%>
+									<%= hidden_field_tag "empleado_seleccionado",@lector.id, class: 'form-control input-sm'%>
+								<% end %>
+							</th><br>
+							<th><b>Ruta:</b></th>
+							<th></th>
+							<th>
+								<% if !@ruta_seleccionada.nil? %>
+									<%= @ruta_seleccionada.codigo_nombre%>
+									<%= hidden_field_tag "ruta_seleccionada",@ruta_seleccionada.id, class: 'form-control input-sm'%>
+								<% end %>
+							</th><br>
+						</tr>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="col-md-4">
+							<div class="form-inline">
+								<label>Desde:</label>
+								<input type="number" id="desde", class="form-control" disabled="true" value="1">
+							</div>	
+						</div>
+						<div class="col-md-4">
+							<div class="form-inline">
+								<label>Hasta:</label>
+								<input type="number" id="hasta", class="form-control">
+							</div>
+						</div>
+						<div class="col-md-4">
+							<button type="button" onclick="seleccionarOrdenes();" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Seleccionar" ><span class="mdi mdi-cursor-pointer"></span></button>
+							<button type="button" id="selectAll" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="Seleccionar Todo" ><span class="mdi mdi-check-all"></span></button>
+							<button type="button" onclick="asignacion_parcial(0)" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Asignar" ><span class="mdi mdi-content-save"></span> </button>
+							<button type="button" onclick="asignacion_parcial(1);" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="Asignar y Salir"><span class="mdi mdi-content-save"></span>  <span class="mdi mdi-exit-to-app"></span></button>
+						</div>
+					</div> 
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="tabla-responsive">
+						<table class="table table-striped table-bordered table-condensed table-hover" >
+							<thead>
+								<tr>
+									<th> -- </th>
+									<th>Correlativo Ruta</th>  
+									<th>Dirección Orden</th>
+									<th>Tipo de lectura</th>
+									<th>Comuna</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% if !@ordenes_lectura.nil? %>
+									<% @ordenes_lectura.each do |orden_lectura|  %>
+										<tr>
+											<td><label><%= check_box_tag 'orden_ids', orden_lectura.id -%></label></td>
+											<td><label><%= orden_lectura.secuencia_lector%></label></td> 
+											<td><label><%= orden_lectura.direccion_orden%></label></td>  
+											<td><label><%= orden_lectura.tipo_lectura.nombre%></label></td>
+											<td><label><%= orden_lectura.comuna.codigo_nombre%></label></td>
+										</tr>
+									<% end %>
+								<% end %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+<% end %>
+
+<!-- # > Funciones Js -->
+<script type="text/javascript"> 
+  // Boton seleccionar Asignacion Parcial
+  function seleccionarOrdenes(){
+    var desde = 1 - parseInt(document.getElementById("desde").value);
+    var hasta = parseInt(document.getElementById("hasta").value);
+    var check = $(':checkbox')
+    for (i = 0; i < check.length; i++){
+      check[i].checked = false;
+    }
+    for (i = desde; i < hasta; i++){
+      check[i].checked = true;
+    }
+	}
+
+	function cargarTablaAsignacion(ruta,empleado){
+		$.ajax({
+			url:"<%=url_for :controller => 'asignacions',:action => 'carga_dividir_ruta_asignacion' %>",
+			data:'ruta=' + encodeURIComponent(ruta)+ "&" + 
+					 'empleado=' + encodeURIComponent(empleado),
+			cache:false,
+			success:function (data) {}
+		})
+	}
+
+  //boton Asignacion Parcial
+  function asignacion_parcial(id_boton_asignacion){
+		var empleado = document.getElementById("empleado_seleccionado").value;
+		var ruta = document.getElementById("ruta_seleccionada").value;
+		var ordenes = new Array();
+		var box = $(':checkbox')
+		for (i = 0; i < box.length; i++){
+			if (box[i].checked == true && box[i].value != "selectAll" && box[i].value != "selectAll_uno"  )
+			{
+				ordenes.push(box[i].value)
+			}
+		}
+		$.ajax({
+			url:"<%=url_for :controller => 'asignacions',:action => 'asignacion_parcial' %>",
+			data: 'ruta=' + encodeURIComponent(ruta)+ "&" + 
+						'empleado=' + encodeURIComponent(empleado)+ "&" + 
+						'ordenes=' + encodeURIComponent(ordenes)+ "&" + 
+						'id_boton_asignacion=' + encodeURIComponent(id_boton_asignacion),
+			cache:false,
+		success:function (data) {}
+		})
+	}
+	
+  // CheckBox Seleecionar Todo
+  $('#selectAll').click(function() {
+    if (true) {
+      $(':checkbox').each(function() {
+        this.checked = true;                        
+      });
+    } 
+    else {
+      $(':checkbox').each(function() {
+        this.checked = false;                        
+      });
+    } 
+  });
+
+	$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+  });
+</script>

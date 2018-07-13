@@ -1,0 +1,34 @@
+<div id="carga_tramos">
+	<h5><b><%=@tarifa%></b></h5>
+	<hr>
+	<div class="row">
+		<div class="col-md-12 table-responsive">
+			<table class="table table-hover table-condensed table-bordered">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Tipo Tramo</th>
+						<th>Rango Inferior</th>
+						<th>Rango Superior</th>
+						<th>Valor</th>
+						<th>Tarifa</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% if !@tramos.nil? %>
+						<% @tramos.each do |t| %>
+							<tr>
+								<td align="center"><%= t.nombre %></td>
+								<td align="center"><%= t.tipo_tramo.nombre %></td>
+								<td align="center"><b><%= t.desde %></b></td>
+								<td align="center"><b><%= t.hasta %></b></td>
+								<td align="center"><b>$ <%= t.precio%></b></td>
+								<td align="center"><%= t.factor_cobro.nombre %></td>
+							</tr>
+						<%end%>
+					<%end%>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
