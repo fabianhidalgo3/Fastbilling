@@ -1,0 +1,39 @@
+version: '2.1'
+
+volumes:
+  redis:
+  db-data:
+    driver: local
+  gems:
+    external: true
+
+services:
+  db-metrogas:
+    image: mysql:5.7
+    volumes:
+      - db-data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+  redis:
+    image: 'redis:3.2-alpine'
+    command: redis-server
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis:/data'
+  app-metrogas:
+    stdin_open: true
+    tty: true
+    build: .
+    command: bundle exec rails s -b 0.0.0.0
+    volumes:
+      - .:/app
+      - gems:/gems
+    ports:
+      - 3000:3000
+    links:
+      - db-metrogas
+      - redis
+    env_file:
+      - ./config/secrets.yml
